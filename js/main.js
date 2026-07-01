@@ -111,6 +111,8 @@ function displaySearchResults(query) {
   }
 
   main.prepend(section);
+  const grid = section.querySelector('.post-grid');
+  if (grid) attachPostCardEvents(grid);
 }
 
 function removeSearchResults() {
