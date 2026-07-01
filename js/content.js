@@ -1386,8 +1386,2790 @@ f"Mean: {arr.mean()}, Sum: {arr.sum()}"
       author: 'Maya Patel',
       date: '2025-02-20',
       readTime: '5 min',
-      featured: false
+      featured: false,
+    },
+    {
+      id: 'dom-manipulation-techniques',
+      type: 'tutorial',
+      title: 'Master the DOM: 10 Practical Manipulation Techniques',
+      excerpt: 'Learn essential DOM manipulation techniques including querySelector, event delegation, dynamic styling, and template rendering.',
+      content: `
+
+    <h2>Querying the DOM</h2>
+    <p>Modern browsers provide <code>querySelector</code> and <code>querySelectorAll</code> for flexible element selection using CSS selectors.</p>
+    <pre><code>const header = document.querySelector('.header');
+const items = document.querySelectorAll('.nav-item:not(.hidden)');</code></pre>
+    <h2>Event Delegation</h2>
+    <p>Attach a single listener to a parent element instead of many child listeners:</p>
+    <pre><code>list.addEventListener('click', (e) => {
+  const btn = e.target.closest('.delete-btn');
+  if (btn) btn.parentElement.remove();
+});</code></pre>
+    <h2>Dynamic Styling</h2>
+    <pre><code>el.classList.toggle('active');
+el.style.setProperty('--offset', offset + 'px');</code></pre>
+    <blockquote>Always use <code>closest()</code> over <code>matches()</code> for event delegation — it handles nested elements correctly.</blockquote>
+  
+      `,
+      image: 'fa-code',
+      category: 'javascript',
+      tags: ['DOM', 'JavaScript', 'Events', 'Frontend'],
+      author: 'Alex Chen',
+      date: '2025-03-01',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'socket-io-chat',
+      type: 'tutorial',
+      title: 'Build a Real-Time Chat with Socket.IO and Vanilla JS',
+      excerpt: 'Create a real-time chat application using Socket.IO for WebSocket communication and vanilla JavaScript for the frontend.',
+      content: `
+
+    <h2>Server Setup</h2>
+    <pre><code>const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', { user: socket.id, text: msg });
+  });
+});
+
+server.listen(3000);</code></pre>
+    <h2>Client</h2>
+    <pre><code>const socket = io();
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  socket.emit('chat message', input.value);
+  input.value = '';
+});
+socket.on('chat message', (msg) => {
+  messages.innerHTML += '<li>' + msg.user + ': ' + msg.text + '</li>';
+});</code></pre>
+    <blockquote>Socket.IO falls back to long-polling if WebSocket is unavailable — your app works everywhere.</blockquote>
+  
+      `,
+      image: 'fa-comments',
+      category: 'javascript',
+      tags: ['Socket.IO', 'WebSocket', 'Real-Time', 'JavaScript'],
+      author: 'Alex Chen',
+      date: '2025-03-03',
+      readTime: '10 min',
+      featured: false,
+    },
+    {
+      id: 'js-design-patterns',
+      type: 'tutorial',
+      title: 'JavaScript Design Patterns: Singleton, Observer, Factory',
+      excerpt: 'Master three essential design patterns in JavaScript with practical real-world examples.',
+      content: `
+
+    <h2>Singleton Pattern</h2>
+    <pre><code>const Database = (() => {
+  let instance;
+  return { getInstance: () => instance || (instance = {}) };
+})();</code></pre>
+    <h2>Observer Pattern</h2>
+    <pre><code>class EventBus {
+  constructor() { this.listeners = {}; }
+  on(event, fn) { (this.listeners[event] ||= []).push(fn); return () => this.off(event, fn); }
+  off(event, fn) { this.listeners[event] = this.listeners[event]?.filter(f => f !== fn); }
+  emit(event, ...args) { this.listeners[event]?.forEach(fn => fn(...args)); }
+}</code></pre>
+    <h2>Factory Pattern</h2>
+    <pre><code>function createUser(type) {
+  const users = { admin: { role: 'admin', permissions: ['read', 'write', 'delete'] }, viewer: { role: 'viewer', permissions: ['read'] } };
+  return users[type] || users.viewer;
+}</code></pre>
+    <blockquote>Design patterns are solutions to common problems — use them when needed, not by default.</blockquote>
+  
+      `,
+      image: 'fa-puzzle-piece',
+      category: 'javascript',
+      tags: ['Design Patterns', 'JavaScript', 'Singleton', 'Observer', 'Factory'],
+      author: 'Maya Patel',
+      date: '2025-03-05',
+      readTime: '9 min',
+      featured: false,
+    },
+    {
+      id: 'es-modules-deep-dive',
+      type: 'tutorial',
+      title: 'ES Modules Deep Dive: Import, Export, Dynamic Imports',
+      excerpt: 'Understand ES modules inside out — static analysis, tree-shaking, dynamic imports, and circular dependencies.',
+      content: `
+
+    <h2>Named vs Default Exports</h2>
+    <pre><code>// utils.js
+export const add = (a, b) => a + b;
+export default function logger(msg) { console.log(msg); }
+
+// app.js
+import logger, { add } from './utils.js';</code></pre>
+    <h2>Dynamic Imports</h2>
+    <pre><code>const module = await import('./heavy-component.js');</code></pre>
+    <h2>Circular Dependencies</h2>
+    <p>ES modules handle circular dependencies via live bindings — the module is evaluated once and bindings are shared.</p>
+    <blockquote>Dynamic imports return a Promise and can be used with <code>React.lazy</code> for code splitting.</blockquote>
+  
+      `,
+      image: 'fa-cubes',
+      category: 'javascript',
+      tags: ['ES Modules', 'JavaScript', 'Import', 'Export', 'Tree-Shaking'],
+      author: 'Sarah Johnson',
+      date: '2025-03-07',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'build-reactive-state-library',
+      type: 'tutorial',
+      title: 'Build Your Own Reactive State Library (like Vue Reactivity)',
+      excerpt: 'Understand reactivity by building a minimal reactive state library using JavaScript Proxies.',
+      content: `
+
+    <h2>Reactive System with Proxy</h2>
+    <pre><code>function reactive(obj) {
+  const deps = new Map();
+  return new Proxy(obj, {
+    get(target, key) {
+      track(deps, key);
+      return Reflect.get(target, key);
+    },
+    set(target, key, value) {
+      Reflect.set(target, key, value);
+      trigger(deps, key);
+      return true;
     }
+  });
+}</code></pre>
+    <h2>Dependency Tracking</h2>
+    <pre><code>let activeEffect;
+function effect(fn) { activeEffect = fn; fn(); activeEffect = null; }
+function track(deps, key) { if (!activeEffect) return; if (!deps.has(key)) deps.set(key, new Set()); deps.get(key).add(activeEffect); }
+function trigger(deps, key) { deps.get(key)?.forEach(fn => fn()); }</code></pre>
+    <blockquote>Vue 3 uses a similar Proxy-based reactivity system. Understanding this helps you debug reactive issues.</blockquote>
+  
+      `,
+      image: 'fa-bolt',
+      category: 'javascript',
+      tags: ['Reactivity', 'Proxy', 'JavaScript', 'State Management'],
+      author: 'Alex Chen',
+      date: '2025-03-10',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'event-loop-visualized',
+      type: 'blog',
+      title: 'The Event Loop Explained with Visual Diagrams',
+      excerpt: 'Understand how JavaScript\'s event loop works — microtasks, macrotasks, and async ordering with visual examples.',
+      content: `
+
+    <h2>How the Event Loop Works</h2>
+    <p>The event loop continuously checks the call stack and task queues. When the call stack is empty, it processes microtasks first, then macrotasks.</p>
+    <pre><code>console.log('1');
+setTimeout(() => console.log('2'), 0);
+Promise.resolve().then(() => console.log('3'));
+console.log('4');
+// Output: 1, 4, 3, 2</code></pre>
+    <h2>Microtasks vs Macrotasks</h2>
+    <p>Microtasks include Promise.then, MutationObserver, queueMicrotask. Macrotasks include setTimeout, setInterval, I/O, UI rendering.</p>
+    <blockquote>After every macrotask, the event loop processes ALL microtasks before the next render cycle.</blockquote>
+  
+      `,
+      image: 'fa-redo',
+      category: 'javascript',
+      tags: ['Event Loop', 'JavaScript', 'Async', 'Performance'],
+      author: 'Sarah Johnson',
+      date: '2025-03-12',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'closures-scope-interview',
+      type: 'blog',
+      title: 'Closures and Scope: Common Interview Questions',
+      excerpt: 'Master closures and lexical scoping through common interview questions and practical examples.',
+      content: `
+
+    <h2>What is a Closure?</h2>
+    <p>A closure is a function that retains access to its outer (lexical) scope even after the outer function has returned.</p>
+    <pre><code>function counter() {
+  let count = 0;
+  return () => ++count;
+}
+const c = counter();
+console.log(c()); // 1
+console.log(c()); // 2</code></pre>
+    <h2>Classic Loop Closure</h2>
+    <pre><code>for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 100); // 3, 3, 3
+}
+// Fix with let or IIFE:
+for (let i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 100); // 0, 1, 2
+}</code></pre>
+    <blockquote>Closures are the foundation of the module pattern, currying, and many functional programming techniques.</blockquote>
+  
+      `,
+      image: 'fa-lock',
+      category: 'javascript',
+      tags: ['Closures', 'Scope', 'JavaScript', 'Interview'],
+      author: 'Alex Chen',
+      date: '2025-03-14',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'optional-chaining-nullish',
+      type: 'blog',
+      title: 'Why You Should Use Optional Chaining and Nullish Coalescing',
+      excerpt: 'Stop writing verbose null checks — optional chaining and nullish coalescing make your code cleaner and safer.',
+      content: `
+
+    <h2>Optional Chaining (?.)</h2>
+    <pre><code>// Before
+const name = user && user.profile && user.profile.name;
+// After
+const name = user?.profile?.name;</code></pre>
+    <h2>Nullish Coalescing (??)</h2>
+    <pre><code>// || treats 0, '' as falsy — often wrong
+const count = value || 10;
+// ?? only checks null/undefined
+const count = value ?? 10;</code></pre>
+    <blockquote>Use <code>??</code> for defaults and <code>?.</code> for safe access — they prevent entire categories of runtime errors.</blockquote>
+  
+      `,
+      image: 'fa-shield',
+      category: 'javascript',
+      tags: ['Optional Chaining', 'Nullish Coalescing', 'JavaScript', 'ES2020'],
+      author: 'Maya Patel',
+      date: '2025-03-17',
+      readTime: '4 min',
+      featured: false,
+    },
+    {
+      id: 'web-workers-offscreen-canvas',
+      type: 'blog',
+      title: 'Web Workers and OffscreenCanvas for Performance',
+      excerpt: 'Offload heavy computation to Web Workers and render graphics with OffscreenCanvas for jank-free UIs.',
+      content: `
+
+    <h2>Web Workers</h2>
+    <pre><code>// worker.js
+self.onmessage = (e) => {
+  const result = heavyComputation(e.data);
+  self.postMessage(result);
+};
+// main.js
+const worker = new Worker('worker.js');
+worker.postMessage(data);
+worker.onmessage = (e) => console.log(e.data);</code></pre>
+    <h2>OffscreenCanvas</h2>
+    <pre><code>const canvas = document.getElementById('myCanvas');
+const offscreen = canvas.transferControlToOffscreen();
+const worker = new Worker('renderer.js');
+worker.postMessage({ canvas: offscreen }, [offscreen]);</code></pre>
+    <blockquote>Transferring OffscreenCanvas to a Worker avoids blocking the main thread during heavy rendering.</blockquote>
+  
+      `,
+      image: 'fa-microchip',
+      category: 'javascript',
+      tags: ['Web Workers', 'OffscreenCanvas', 'Performance', 'Multithreading'],
+      author: 'James Wilson',
+      date: '2025-03-19',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'lodash-native-alternatives',
+      type: 'blog',
+      title: 'Top 10 Lodash Utilities You Can Replace with Native JS',
+      excerpt: 'Modern JavaScript has native equivalents for most Lodash functions — reduce your bundle size by dropping Lodash.',
+      content: `
+
+    <h2>Native Replacements</h2>
+    <pre><code>// _.get -> optional chaining
+_.get(obj, 'a.b.c')  ->  obj?.a?.b?.c
+
+// _.cloneDeep -> structuredClone
+_.cloneDeep(obj)  ->  structuredClone(obj)
+
+// _.debounce -> built-in or tiny polyfill
+// _.groupBy -> reduce()
+const grouped = arr.reduce((acc, item) => {
+  (acc[item.type] ??= []).push(item);
+  return acc;
+}, {});</code></pre>
+    <p>Many apps import the entire lodash library but use only a few functions. Native alternatives like <code>Object.fromEntries</code>, <code>Array.flat</code>, and <code>String.replaceAll</code> cover most use cases.</p>
+    <blockquote>If you only need one or two Lodash functions, inline them or use <code>lodash-es</code> for tree-shaking.</blockquote>
+  
+      `,
+      image: 'fa-box-open',
+      category: 'javascript',
+      tags: ['Lodash', 'JavaScript', 'Bundle Size', 'Native'],
+      author: 'Priya Sharma',
+      date: '2025-03-21',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'async-python-asyncio',
+      type: 'tutorial',
+      title: 'Async Python with asyncio and aiohttp',
+      excerpt: 'Write concurrent Python code using asyncio and aiohttp for fast I/O-bound operations like web scraping.',
+      content: `
+
+    <h2>Async Basics</h2>
+    <pre><code>import asyncio
+
+async def fetch(url):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as resp:
+            return await resp.text()
+
+async def main():
+    urls = ['https://example.com'] * 10
+    tasks = [fetch(url) for url in urls]
+    results = await asyncio.gather(*tasks)
+
+asyncio.run(main())</code></pre>
+    <h2>Semaphores for Rate Limiting</h2>
+    <pre><code>sem = asyncio.Semaphore(5)
+async def limited_fetch(url):
+    async with sem:
+        return await fetch(url)</code></pre>
+    <blockquote>asyncio.gather runs tasks concurrently, not in parallel. Use <code>asyncio.run()</code> to start the event loop.</blockquote>
+  
+      `,
+      image: 'fa-brands fa-python',
+      category: 'python',
+      tags: ['asyncio', 'aiohttp', 'Python', 'Async'],
+      author: 'Sarah Johnson',
+      date: '2025-03-02',
+      readTime: '9 min',
+      featured: false,
+    },
+    {
+      id: 'cli-tool-click-poetry',
+      type: 'tutorial',
+      title: 'Build a CLI Tool with Click and Poetry',
+      excerpt: 'Create a professional command-line tool in Python with Click for the interface and Poetry for packaging.',
+      content: `
+
+    <h2>Project Setup</h2>
+    <pre><code>poetry new my-cli
+cd my-cli
+poetry add click</code></pre>
+    <h2>CLI with Click</h2>
+    <pre><code>import click
+
+@click.command()
+@click.argument('name')
+@click.option('--greeting', default='Hello')
+def greet(name, greeting):
+    click.echo(f'{greeting}, {name}!')
+
+if __name__ == '__main__':
+    greet()</code></pre>
+    <h2>Package Script</h2>
+    <p>In <code>pyproject.toml</code> add: <code>[tool.poetry.scripts] my-cli = "my_cli:main"</code></p>
+    <blockquote>Click automatically generates help text and error messages from your function signatures.</blockquote>
+  
+      `,
+      image: 'fa-terminal',
+      category: 'python',
+      tags: ['Click', 'Poetry', 'CLI', 'Python'],
+      author: 'Alex Chen',
+      date: '2025-03-04',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'fastapi-sqlmodel-crud',
+      type: 'tutorial',
+      title: 'FastAPI + SQLModel: Full CRUD with Type Safety',
+      excerpt: 'Build a type-safe CRUD API using FastAPI and SQLModel with automatic migrations and Pydantic validation.',
+      content: `
+
+    <h2>Define Model</h2>
+    <pre><code>from sqlmodel import SQLModel, Field, create_engine, Session
+
+class User(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    name: str
+    email: str</code></pre>
+    <h2>CRUD Endpoints</h2>
+    <pre><code>from fastapi import FastAPI, Depends
+
+app = FastAPI()
+
+@app.post('/users')
+def create_user(user: User, session: Session = Depends(get_session)):
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return user
+
+@app.get('/users/{user_id}')
+def get_user(user_id: int, session = Depends(get_session)):
+    return session.get(User, user_id)</code></pre>
+    <blockquote>SQLModel combines SQLAlchemy and Pydantic — one model for the DB and for API validation.</blockquote>
+  
+      `,
+      image: 'fa-server',
+      category: 'python',
+      tags: ['FastAPI', 'SQLModel', 'CRUD', 'Python'],
+      author: 'Maya Patel',
+      date: '2025-03-06',
+      readTime: '10 min',
+      featured: false,
+    },
+    {
+      id: 'playwright-web-scraping',
+      type: 'tutorial',
+      title: 'Web Scraping with Playwright (Python)',
+      excerpt: 'Scrape dynamic websites using Playwright Python with headless browser automation and anti-bot techniques.',
+      content: `
+
+    <h2>Setup</h2>
+    <pre><code>pip install playwright
+playwright install</code></pre>
+    <h2>Scrape Dynamic Content</h2>
+    <pre><code>from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
+    page = browser.new_page()
+    page.goto('https://example.com')
+    page.wait_for_selector('.results')
+    items = page.query_selector_all('.item')
+    data = [item.inner_text() for item in items]
+    browser.close()</code></pre>
+    <blockquote>Playwright auto-waits for elements. Use <code>page.wait_for_selector</code> instead of fixed sleep calls.</blockquote>
+  
+      `,
+      image: 'fa-spider',
+      category: 'python',
+      tags: ['Playwright', 'Web Scraping', 'Python', 'Automation'],
+      author: 'James Wilson',
+      date: '2025-03-08',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'python-type-hints-mypy',
+      type: 'blog',
+      title: 'Python Type Hints: From Annotations to mypy Strict',
+      excerpt: 'Level up from basic type hints to strict mypy enforcement with TypedDict, Protocol, and generics.',
+      content: `
+
+    <h2>Basic Type Hints</h2>
+    <pre><code>def greet(name: str) -> str:
+    return f'Hello, {name}'</code></pre>
+    <h2>TypedDict and Protocol</h2>
+    <pre><code>from typing import TypedDict, Protocol
+
+class UserDict(TypedDict):
+    id: int
+    name: str
+
+class Drawable(Protocol):
+    def draw(self) -> None: ...</code></pre>
+    <h2>mypy Strict Mode</h2>
+    <p>Enable <code>--strict</code> in your mypy config. It enables <code>no_implicit_optional</code>, <code>warn_return_any</code>, and more.</p>
+    <blockquote>Type hints catch bugs at analysis time, not runtime. Run mypy in CI to enforce them.</blockquote>
+  
+      `,
+      image: 'fa-check-double',
+      category: 'python',
+      tags: ['Type Hints', 'mypy', 'Python', 'Typing'],
+      author: 'Priya Sharma',
+      date: '2025-03-11',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'python-generators-coroutines',
+      type: 'blog',
+      title: 'Understanding Python Generators and Coroutines',
+      excerpt: 'Master generators, yield, send, and coroutines for lazy evaluation and efficient data pipelines.',
+      content: `
+
+    <h2>Generator Basics</h2>
+    <pre><code>def count_up_to(n):
+    i = 0
+    while i < n:
+        yield i
+        i += 1</code></pre>
+    <h2>Two-Way Communication with send()</h2>
+    <pre><code>def accumulator():
+    total = 0
+    while True:
+        value = yield total
+        total += value
+
+acc = accumulator()
+next(acc)
+print(acc.send(10))  # 10
+print(acc.send(5))   # 15</code></pre>
+    <blockquote>Generators are memory-efficient for large datasets — they produce values on demand instead of storing them all.</blockquote>
+  
+      `,
+      image: 'fa-sync',
+      category: 'python',
+      tags: ['Generators', 'Coroutines', 'Python', 'Iterators'],
+      author: 'Sarah Johnson',
+      date: '2025-03-15',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'zen-of-python-idiomatic',
+      type: 'blog',
+      title: 'The Zen of Python Applied: Writing Idiomatic Code',
+      excerpt: 'Practical examples of each Python Zen principle with before-and-after code comparisons.',
+      content: `
+
+    <h2>Beautiful is Better than Ugly</h2>
+    <pre><code># Ugly
+if x == True and y != None and len(z) > 0:
+# Beautiful
+if x and y is not None and z:</code></pre>
+    <h2>Simple is Better than Complex</h2>
+    <pre><code># Complex
+result = list(map(lambda x: x * 2, filter(lambda x: x > 0, numbers)))
+# Simple
+result = [x * 2 for x in numbers if x > 0]</code></pre>
+    <blockquote>Run <code>import this</code> in a Python shell to see the Zen. Let it guide your design decisions.</blockquote>
+  
+      `,
+      image: 'fa-feather',
+      category: 'python',
+      tags: ['Python', 'Idiomatic', 'Zen', 'Best Practices'],
+      author: 'Maya Patel',
+      date: '2025-03-18',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'python-decorators-deep-dive',
+      type: 'blog',
+      title: 'Decorators in Depth: Caching, Logging, and Auth Wrappers',
+      excerpt: 'Build powerful Python decorators for caching, logging, authentication, and more with functools.wraps.',
+      content: `
+
+    <h2>Basic Decorator</h2>
+    <pre><code>from functools import wraps
+
+def log_calls(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f'Calling {func.__name__}')
+        return func(*args, **kwargs)
+    return wrapper
+
+@log_calls
+def add(a, b): return a + b</code></pre>
+    <h2>Parameterized Decorator</h2>
+    <pre><code>def cache(ttl_seconds=60):
+    def decorator(func):
+        cached = {}
+        @wraps(func)
+        def wrapper(*args):
+            if args in cached:
+                return cached[args]
+            result = func(*args)
+            cached[args] = result
+            return result
+        return wrapper
+    return decorator</code></pre>
+    <blockquote>Always use <code>@wraps</code> from functools to preserve the decorated function's metadata.</blockquote>
+  
+      `,
+      image: 'fa-layer-group',
+      category: 'python',
+      tags: ['Decorators', 'Python', 'Caching', 'Logging'],
+      author: 'Alex Chen',
+      date: '2025-03-22',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'react-router-v6-deep-dive',
+      type: 'tutorial',
+      title: 'React Router v6: Nested Routes, Loaders, and Actions',
+      excerpt: 'Build complex routing with React Router v6 using data loaders, actions, and nested layouts.',
+      content: `
+
+    <h2>Nested Routes</h2>
+    <pre><code>const router = createBrowserRouter([
+  {
+    path: '/',
+    element: &lt;RootLayout /&gt;,
+    errorElement: &lt;ErrorPage /&gt;,
+    children: [
+      { index: true, element: &lt;Home /&gt; },
+      { path: 'dashboard', element: &lt;Dashboard /&gt; },
+      { path: 'users/:id', element: &lt;UserProfile /&gt; }
+    ]
+  }
+]);</code></pre>
+    <h2>Data Loaders</h2>
+    <pre><code>const router = createBrowserRouter([{
+  path: 'users/:id',
+  loader: ({ params }) => fetch('/api/users/' + params.id),
+  element: &lt;User /&gt;
+}]);</code></pre>
+    <blockquote>Data loaders let you fetch data before rendering the route component — no more useEffect for data fetching.</blockquote>
+  
+      `,
+      image: 'fa-brands fa-react',
+      category: 'react',
+      tags: ['React Router', 'React', 'Routing', 'Data Loading'],
+      author: 'Alex Chen',
+      date: '2025-03-01',
+      readTime: '10 min',
+      featured: false,
+    },
+    {
+      id: 'zustand-state-management',
+      type: 'tutorial',
+      title: 'State Management with Zustand (Lightweight Alternative)',
+      excerpt: 'Replace Redux boilerplate with Zustand — a tiny, fast, and scalable state management library for React.',
+      content: `
+
+    <h2>Create a Store</h2>
+    <pre><code>import { create } from 'zustand';
+
+const useStore = create((set) => ({
+  count: 0,
+  increment: () => set((state) => ({ count: state.count + 1 })),
+  reset: () => set({ count: 0 })
+}));</code></pre>
+    <h2>Use in Components</h2>
+    <pre><code>function Counter() {
+  const { count, increment } = useStore();
+  return &lt;button onClick={increment}&gt;{count}&lt;/button&gt;;
+}</code></pre>
+    <blockquote>Zustand selects only the pieces of state your component uses — no re-renders for unrelated changes.</blockquote>
+  
+      `,
+      image: 'fa-database',
+      category: 'react',
+      tags: ['Zustand', 'State Management', 'React', 'JavaScript'],
+      author: 'Maya Patel',
+      date: '2025-03-05',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'react-testing-vitest',
+      type: 'tutorial',
+      title: 'Testing React Components with Vitest and React Testing Library',
+      excerpt: 'Write reliable component tests with Vitest and React Testing Library — user-centric, not implementation-focused.',
+      content: `
+
+    <h2>Setup</h2>
+    <pre><code>npm install vitest @testing-library/react @testing-library/jest-dom</code></pre>
+    <h2>Test a Component</h2>
+    <pre><code>import { render, screen, fireEvent } from '@testing-library/react';
+import Counter from './Counter';
+
+test('increments count', () => {
+  render(&lt;Counter /&gt;);
+  fireEvent.click(screen.getByText('+'));
+  expect(screen.getByTestId('count')).toHaveTextContent('1');
+});</code></pre>
+    <blockquote>Test behavior, not implementation. Don't test internal state — test what the user sees and does.</blockquote>
+  
+      `,
+      image: 'fa-vial',
+      category: 'testing',
+      tags: ['Vitest', 'Testing', 'React', 'RTL'],
+      author: 'Priya Sharma',
+      date: '2025-03-08',
+      readTime: '9 min',
+      featured: false,
+    },
+    {
+      id: 'react-server-components',
+      type: 'tutorial',
+      title: 'React Server Components (RSC) in Next.js App Router',
+      excerpt: 'Learn how server components work in Next.js 14+ — when to use server vs client components for optimal performance.',
+      content: `
+
+    <h2>Server Component (Default)</h2>
+    <pre><code>// app/page.tsx — this is a server component by default
+export default async function Home() {
+  const data = await fetch('https://api.example.com/data');
+  const json = await data.json();
+  return &lt;div&gt;{json.title}&lt;/div&gt;;
+}</code></pre>
+    <h2>Client Component</h2>
+    <pre><code>// app/Counter.tsx
+'use client';
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  return &lt;button onClick={() => setCount(c => c + 1)}&gt;{count}&lt;/button&gt;;
+}</code></pre>
+    <blockquote>Server components reduce client-side JavaScript. Use 'use client' only when you need interactivity, hooks, or browser APIs.</blockquote>
+  
+      `,
+      image: 'fa-server',
+      category: 'react',
+      tags: ['React Server Components', 'Next.js', 'React', 'Performance'],
+      author: 'Alex Chen',
+      date: '2025-03-11',
+      readTime: '9 min',
+      featured: false,
+    },
+    {
+      id: 'react-19-whats-new',
+      type: 'blog',
+      title: 'React 19: What\'s New and Should You Upgrade?',
+      excerpt: 'A breakdown of React 19 features including Actions, the use hook, refs as props, and the new compiler.',
+      content: `
+
+    <h2>React 19 Highlights</h2>
+    <ul>
+      <li><strong>Actions:</strong> Built-in handling of async transitions and form submissions</li>
+      <li><strong>use() hook:</strong> Read promises and context directly in render</li>
+      <li><strong>ref as prop:</strong> No more forwardRef — ref is a regular prop</li>
+      <li><strong>React Compiler:</strong> Automatic memoization (no more useMemo/useCallback)</li>
+    </ul>
+    <h2>Before and After</h2>
+    <pre><code>// React 18: forwardRef required
+const Input = forwardRef((props, ref) => &lt;input ref={ref} /&gt;);
+// React 19: ref is just a prop
+const Input = ({ ref, ...props }) => &lt;input ref={ref} /&gt;;</code></pre>
+    <blockquote>React 19 is mostly backward-compatible. The compiler is opt-in and can be adopted incrementally.</blockquote>
+  
+      `,
+      image: 'fa-star',
+      category: 'react',
+      tags: ['React 19', 'React', 'Upgrade', 'New Features'],
+      author: 'Sarah Johnson',
+      date: '2025-03-14',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'compound-components-pattern',
+      type: 'blog',
+      title: 'Compound Components and Render Props Patterns',
+      excerpt: 'Build flexible reusable React components using compound components and render props patterns.',
+      content: `
+
+    <h2>Compound Component Pattern</h2>
+    <pre><code>function Tabs({ children }) { return &lt;div className="tabs"&gt;{children}&lt;/div&gt;; }
+Tabs.Tab = ({ label, active, onClick }) => (
+  &lt;button className={active ? 'active' : ''} onClick={onClick}&gt;{label}&lt;/button&gt;
+);
+Tabs.Panel = ({ children, active }) => active ? &lt;div&gt;{children}&lt;/div&gt; : null;
+
+// Usage
+&lt;Tabs&gt;
+  &lt;Tabs.Tab label="Profile" active={tab === 'profile'} onClick={() => setTab('profile')} /&gt;
+  &lt;Tabs.Tab label="Settings" active={tab === 'settings'} onClick={() => setTab('settings')} /&gt;
+  &lt;Tabs.Panel active={tab === 'profile'}&gt;Profile content&lt;/Tabs.Panel&gt;
+&lt;/Tabs&gt;</code></pre>
+    <blockquote>Compound components share implicit state via React Context — the parent manages state, children just render.</blockquote>
+  
+      `,
+      image: 'fa-puzzle-piece',
+      category: 'react',
+      tags: ['Design Patterns', 'React', 'Compound Components', 'Render Props'],
+      author: 'Maya Patel',
+      date: '2025-03-17',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'react-performance-profiling',
+      type: 'blog',
+      title: 'React Performance: Profiling, Memoization, and Virtualization',
+      excerpt: 'Identify and fix React performance bottlenecks using the Profiler, memo, useMemo, and windowing libraries.',
+      content: `
+
+    <h2>Find Bottlenecks with Profiler</h2>
+    <pre><code>import { Profiler } from 'react';
+
+function onRender(id, phase, actualDuration) {
+  console.log(id, phase, actualDuration);
+}
+
+&lt;Profiler id="List" onRender={onRender}&gt;
+  &lt;ExpensiveList /&gt;
+&lt;/Profiler&gt;</code></pre>
+    <h2>Virtualization with react-window</h2>
+    <pre><code>import { FixedSizeList } from 'react-window';
+
+&lt;FixedSizeList height={400} itemCount={10000} itemSize={50}&gt;
+  {({ index, style }) => &lt;div style={style}&gt;Row {index}&lt;/div&gt;}
+&lt;/FixedSizeList&gt;</code></pre>
+    <blockquote>Don't memoize prematurely. Profile first, then wrap only the components that actually re-render unnecessarily.</blockquote>
+  
+      `,
+      image: 'fa-tachometer-alt',
+      category: 'react',
+      tags: ['Performance', 'React', 'Memoization', 'Virtualization'],
+      author: 'James Wilson',
+      date: '2025-03-20',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'redux-to-zustand-migration',
+      type: 'blog',
+      title: 'Migrating from Redux to Zustand/Context: A Practical Guide',
+      excerpt: 'A step-by-step guide for migrating a Redux codebase to Zustand or React Context with minimal disruption.',
+      content: `
+
+    <h2>Migration Strategy</h2>
+    <ol>
+      <li>Install Zustand alongside Redux — both can coexist</li>
+      <li>Create Zustand stores mirroring your Redux slices</li>
+      <li>Gradually replace useSelector with useStore in components</li>
+      <li>Remove Redux boilerplate slice by slice</li>
+    </ol>
+    <pre><code>// Before (Redux)
+const count = useSelector(state => state.counter.value);
+
+// After (Zustand)
+const count = useCounterStore(state => state.count);</code></pre>
+    <blockquote>Zustand removes action types, reducers, dispatch, and Provider wrappers — ~60% less boilerplate than Redux.</blockquote>
+  
+      `,
+      image: 'fa-exchange-alt',
+      category: 'react',
+      tags: ['Redux', 'Zustand', 'Migration', 'State Management'],
+      author: 'Alex Chen',
+      date: '2025-03-24',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'responsive-design-patterns',
+      type: 'tutorial',
+      title: 'Responsive Design Patterns: From Mobile-First to Container Queries',
+      excerpt: 'Build truly responsive layouts using mobile-first CSS, container queries, and modern responsive patterns.',
+      content: `
+
+    <h2>Mobile-First Approach</h2>
+    <pre><code>.card { display: flex; flex-direction: column; }
+@media (min-width: 768px) {
+  .card { flex-direction: row; }
+}</code></pre>
+    <h2>Container Queries</h2>
+    <pre><code>.card-container { container-type: inline-size; }
+@container (min-width: 400px) {
+  .card { flex-direction: row; }
+}</code></pre>
+    <blockquote>Container queries let components respond to their parent's width, not just the viewport — truly reusable components.</blockquote>
+  
+      `,
+      image: 'fa-mobile-alt',
+      category: 'web-dev',
+      tags: ['Responsive', 'CSS', 'Container Queries', 'Mobile-First'],
+      author: 'Priya Sharma',
+      date: '2025-03-03',
+      readTime: '9 min',
+      featured: false,
+    },
+    {
+      id: 'form-validation-frontend',
+      type: 'tutorial',
+      title: 'Form Validation: Constraint API, Custom Validation, UX Patterns',
+      excerpt: 'Build robust form validation using the Constraint Validation API with great user experience patterns.',
+      content: `
+
+    <h2>HTML5 Constraint Validation</h2>
+    <pre><code>&lt;input type="email" required minlength="3" pattern="[^@]+@[^@]+.[^@]+"&gt;
+&lt;span class="error"&gt;&lt;/span&gt;</code></pre>
+    <h2>Custom Validation with JavaScript</h2>
+    <pre><code>const input = document.getElementById('email');
+input.addEventListener('input', () => {
+  input.setCustomValidity('');
+  if (input.validity.typeMismatch) {
+    input.setCustomValidity('Please enter a valid email');
+  }
+});</code></pre>
+    <blockquote>Show validation errors inline, not in popups. Validate on blur or input, not just on submit.</blockquote>
+  
+      `,
+      image: 'fa-check-circle',
+      category: 'web-dev',
+      tags: ['Validation', 'Forms', 'UX', 'HTML5'],
+      author: 'Sarah Johnson',
+      date: '2025-03-06',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'semantic-html-accessibility',
+      type: 'tutorial',
+      title: 'Semantic HTML: The Foundation of Accessible Websites',
+      excerpt: 'Use semantic HTML elements correctly for better accessibility, SEO, and code readability.',
+      content: `
+
+    <h2>Why Semantics Matter</h2>
+    <p>Screen readers and search engines rely on HTML structure. Using the right elements improves both.</p>
+    <pre><code>&lt;!-- Bad --&gt;
+&lt;div class="nav"&gt;...&lt;/div&gt;
+&lt;div class="main"&gt;...&lt;/div&gt;
+
+&lt;!-- Good --&gt;
+&lt;nav&gt;...&lt;/nav&gt;
+&lt;main&gt;...&lt;/main&gt;</code></pre>
+    <h2>Landmarks</h2>
+    <p>Use <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;aside&gt;</code>, and <code>&lt;footer&gt;</code> correctly.</p>
+    <blockquote>Every page should have exactly one <code>&lt;main&gt;</code> and one <code>&lt;h1&gt;</code>. Skip navigation with a skip link.</blockquote>
+  
+      `,
+      image: 'fa-code',
+      category: 'web-dev',
+      tags: ['Semantic HTML', 'Accessibility', 'SEO', 'HTML5'],
+      author: 'Maya Patel',
+      date: '2025-03-10',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'image-optimization-web',
+      type: 'tutorial',
+      title: 'Image Optimization for the Web: Formats, CDN, Lazy Loading',
+      excerpt: 'Optimize images for the web with modern formats, responsive images, CDN delivery, and lazy loading.',
+      content: `
+
+    <h2>Modern Formats</h2>
+    <pre><code>&lt;picture&gt;
+  &lt;source srcset="image.avif" type="image/avif"&gt;
+  &lt;source srcset="image.webp" type="image/webp"&gt;
+  &lt;img src="image.jpg" alt="description" loading="lazy"&gt;
+&lt;/picture&gt;</code></pre>
+    <h2>Responsive Images</h2>
+    <pre><code>&lt;img src="small.jpg" srcset="medium.jpg 768w, large.jpg 1200w"
+     sizes="(max-width: 768px) 100vw, 50vw" alt=""&gt;</code></pre>
+    <blockquote>WebP typically saves 25-35% over JPEG. AVIF saves another 20% over WebP with better quality.</blockquote>
+  
+      `,
+      image: 'fa-images',
+      category: 'web-dev',
+      tags: ['Images', 'Optimization', 'WebP', 'AVIF', 'CDN'],
+      author: 'James Wilson',
+      date: '2025-03-13',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'api-integration-patterns',
+      type: 'tutorial',
+      title: 'API Integration Patterns: Fetch, Error Handling, Retry, Caching',
+      excerpt: 'Implement robust API integration with fetch, automatic retries, error handling, and client-side caching.',
+      content: `
+
+    <h2>Fetch with Error Handling</h2>
+    <pre><code>async function apiFetch(url, options = {}) {
+  const res = await fetch(url, {
+    headers: { 'Content-Type': 'application/json', ...options.headers },
+    ...options
+  });
+  if (!res.ok) throw new ApiError(res.status, await res.json());
+  return res.json();
+}</code></pre>
+    <h2>Automatic Retry</h2>
+    <pre><code>async function fetchWithRetry(url, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try { return await apiFetch(url); }
+    catch (e) { if (i === retries - 1) throw e; }
+  }
+}</code></pre>
+    <blockquote>Use the <code>AbortController</code> to cancel stale requests when the user navigates away.</blockquote>
+  
+      `,
+      image: 'fa-plug',
+      category: 'web-dev',
+      tags: ['API', 'Fetch', 'Error Handling', 'Caching'],
+      author: 'Alex Chen',
+      date: '2025-03-16',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'progressive-enhancement',
+      type: 'blog',
+      title: 'Progressive Enhancement: Building Robust Web Experiences',
+      excerpt: 'Design websites that work without JavaScript first, then enhance with JavaScript for a richer experience.',
+      content: `
+
+    <h2>The Principle</h2>
+    <p>Start with a functional HTML-only experience. Layer CSS for presentation, then JavaScript for interactivity. Every layer should degrade gracefully.</p>
+    <pre><code>&lt;!-- Works without JS --&gt;
+&lt;form action="/submit" method="POST"&gt;
+  &lt;input type="email" name="email" required&gt;
+  &lt;button type="submit"&gt;Subscribe&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;script&gt;
+  // Enhance with JS
+  document.querySelector('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await fetch('/api/subscribe', { method: 'POST', body: new FormData(e.target) });
+  });
+&lt;/script&gt;</code></pre>
+    <blockquote>Progressive enhancement is the opposite of graceful degradation — you build up from the baseline, not down from the peak.</blockquote>
+  
+      `,
+      image: 'fa-layer-group',
+      category: 'web-dev',
+      tags: ['Progressive Enhancement', 'JavaScript', 'HTML', 'Resilience'],
+      author: 'Priya Sharma',
+      date: '2025-03-19',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'web-vitals-lighthouse',
+      type: 'blog',
+      title: 'Core Web Vitals and Lighthouse: A Practical Optimization Guide',
+      excerpt: 'Measure and optimize Core Web Vitals (LCP, FID, CLS) using Lighthouse and real-user monitoring.',
+      content: `
+
+    <h2>Core Web Vitals</h2>
+    <ul>
+      <li><strong>LCP (Largest Contentful Paint):</strong> < 2.5s — optimize images, preload key resources</li>
+      <li><strong>FID (First Input Delay):</strong> < 100ms — split long tasks, use web workers</li>
+      <li><strong>CLS (Cumulative Layout Shift):</strong> < 0.1 — set dimensions on images, avoid injecting content above existing</li>
+    </ul>
+    <h2>Quick Wins</h2>
+    <pre><code>&lt;!-- Preload hero image --&gt;
+&lt;link rel="preload" href="hero.webp" as="image"&gt;
+&lt;!-- Set dimensions to prevent layout shift --&gt;
+&lt;img src="photo.jpg" width="800" height="600" alt=""&gt;</code></pre>
+    <blockquote>Run Lighthouse in incognito mode. Aim for 90+ across all categories for a green badge.</blockquote>
+  
+      `,
+      image: 'fa-chart-line',
+      category: 'web-dev',
+      tags: ['Core Web Vitals', 'Lighthouse', 'SEO', 'Performance'],
+      author: 'Sarah Johnson',
+      date: '2025-03-22',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'browser-dev-tools-mastery',
+      type: 'blog',
+      title: 'Browser DevTools Mastery: Debug Faster, Ship Better',
+      excerpt: 'Unlock advanced Chrome DevTools features for debugging, performance profiling, and network analysis.',
+      content: `
+
+    <h2>Essential Features</h2>
+    <ul>
+      <li><strong>Breakpoints:</strong> Conditional, log points, XHR/fetch breakpoints</li>
+      <li><strong>Coverage tab:</strong> Find unused CSS/JS</li>
+      <li><strong>Performance tab:</strong> Record and analyze frame rates, long tasks</li>
+      <li><strong>Network throttling:</strong> Simulate Slow 3G</li>
+    </ul>
+    <h2>Debugging Tips</h2>
+    <pre><code>// Logpoint — logs without stopping
+console.log('value:', x);
+// Conditional breakpoint — stops only when condition is true
+x > 100</code></pre>
+    <blockquote>Use \`debugger\` statements in code as quick inline breakpoints during development.</blockquote>
+  
+      `,
+      image: 'fa-bug',
+      category: 'web-dev',
+      tags: ['DevTools', 'Debugging', 'Chrome', 'Performance'],
+      author: 'James Wilson',
+      date: '2025-03-25',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'flexbox-fundamentals',
+      type: 'tutorial',
+      title: 'Flexbox Fundamentals: Everything You Need to Know',
+      excerpt: 'Master CSS Flexbox with practical examples covering alignment, wrapping, ordering, and responsive patterns.',
+      content: `
+
+    <h2>Basic Flexbox</h2>
+    <pre><code>.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}</code></pre>
+    <h2>Flex Properties</h2>
+    <pre><code>.item { flex: 1; }           /* grow equally */
+.item { flex: 0 0 200px; }   /* fixed width */
+.item { align-self: flex-end; } /* override alignment */</code></pre>
+    <blockquote>Remember: \`justify-content\` works on the main axis, \`align-items\` on the cross axis.</blockquote>
+  
+      `,
+      image: 'fa-arrows-alt-h',
+      category: 'css',
+      tags: ['Flexbox', 'CSS', 'Layout', 'Responsive'],
+      author: 'Maya Patel',
+      date: '2025-03-02',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'css-custom-properties-theming',
+      type: 'tutorial',
+      title: 'CSS Custom Properties (Variables) and Theming',
+      excerpt: 'Build dynamic themes with CSS custom properties, including dark mode, design tokens, and real-time switching.',
+      content: `
+
+    <h2>Define Properties</h2>
+    <pre><code>:root {
+  --color-primary: #6366f1;
+  --color-bg: #ffffff;
+  --color-text: #1e293b;
+  --space-md: 16px;
+}</code></pre>
+    <h2>Dynamic Theming</h2>
+    <pre><code>[data-theme="dark"] {
+  --color-bg: #0f172a;
+  --color-text: #e2e8f0;
+}
+body { background: var(--color-bg); color: var(--color-text); }</code></pre>
+    <blockquote>Custom properties cascade and can be changed at runtime — no preprocessor rebuild needed.</blockquote>
+  
+      `,
+      image: 'fa-palette',
+      category: 'css',
+      tags: ['CSS Variables', 'Theming', 'Design Tokens', 'Dark Mode'],
+      author: 'Priya Sharma',
+      date: '2025-03-05',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'build-design-system-css',
+      type: 'tutorial',
+      title: 'Build a Design System with Modern CSS',
+      excerpt: 'Create a scalable design system using CSS cascade layers, container queries, :has(), and logical properties.',
+      content: `
+
+    <h2>Cascade Layers</h2>
+    <pre><code>@layer reset, base, components, utilities;
+
+@layer reset { * { box-sizing: border-box; margin: 0; } }
+@layer components {
+  .btn { padding: 0.5em 1em; border-radius: 0.25em; }
+}</code></pre>
+    <h2>The :has() Selector</h2>
+    <pre><code>.card:has(img) { display: grid; grid-template-columns: 200px 1fr; }
+.form-group:has(:invalid) .error { display: block; }</code></pre>
+    <blockquote>:has() is the most powerful CSS selector in years — it selects parents based on children.</blockquote>
+  
+      `,
+      image: 'fa-paint-roller',
+      category: 'css',
+      tags: ['Design System', 'CSS', 'Cascade Layers', ':has()'],
+      author: 'Maya Patel',
+      date: '2025-03-08',
+      readTime: '10 min',
+      featured: false,
+    },
+    {
+      id: 'advanced-css-animations',
+      type: 'tutorial',
+      title: 'Advanced Animations: Keyframes, Transitions, and Scroll-Driven',
+      excerpt: 'Create performant CSS animations using keyframes, transitions, and the new scroll-driven animation API.',
+      content: `
+
+    <h2>Keyframe Animations</h2>
+    <pre><code>@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.element { animation: fadeIn 0.3s ease-out; }</code></pre>
+    <h2>Scroll-Driven Animations</h2>
+    <pre><code>@keyframes grow { from { scale: 0.5; } to { scale: 1; } }
+.element {
+  animation: grow linear;
+  animation-timeline: view();
+  animation-range: entry 0% entry 100%;
+}</code></pre>
+    <blockquote>Use \`will-change: transform, opacity\` on animated elements for GPU-accelerated rendering.</blockquote>
+  
+      `,
+      image: 'fa-play-circle',
+      category: 'css',
+      tags: ['CSS Animations', 'Keyframes', 'Scroll-Driven', 'Performance'],
+      author: 'James Wilson',
+      date: '2025-03-12',
+      readTime: '9 min',
+      featured: false,
+    },
+    {
+      id: 'modern-css-reset-2025',
+      type: 'blog',
+      title: 'Modern CSS Reset: What Should You Keep in 2025?',
+      excerpt: 'Evaluate what belongs in a modern CSS reset now that browsers have normalized many defaults.',
+      content: `
+
+    <h2>The Minimal Reset</h2>
+    <pre><code>*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; }
+p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }</code></pre>
+    <p>Many older reset rules (like removing list styles) are better handled at the component level. Keep it minimal.</p>
+    <blockquote>A good reset removes browser inconsistencies without fighting browser defaults.</blockquote>
+  
+      `,
+      image: 'fa-eraser',
+      category: 'css',
+      tags: ['CSS Reset', 'CSS', 'Best Practices', 'Browser Defaults'],
+      author: 'Sarah Johnson',
+      date: '2025-03-15',
+      readTime: '4 min',
+      featured: false,
+    },
+    {
+      id: 'grid-vs-flexbox-guide',
+      type: 'blog',
+      title: 'CSS Grid vs Flexbox: When to Use Each',
+      excerpt: 'A decision guide with layout pattern examples comparing CSS Grid and Flexbox for different scenarios.',
+      content: `
+
+    <h2>When to Use Flexbox</h2>
+    <ul>
+      <li>One-dimensional layouts (row OR column)</li>
+      <li>Content-driven sizing</li>
+      <li>Navigation bars, toolbars, centering</li>
+      <li>Cards in a row that wrap</li>
+    </ul>
+    <h2>When to Use Grid</h2>
+    <ul>
+      <li>Two-dimensional layouts (rows AND columns)</li>
+      <li>Explicit placement of items</li>
+      <li>Page-level layouts, galleries, dashboards</li>
+      <li>When you need gap/alignment in both axes</li>
+    </ul>
+    <blockquote>They're not mutually exclusive — use Grid for the page layout and Flexbox for components within grid cells.</blockquote>
+  
+      `,
+      image: 'fa-th',
+      category: 'css',
+      tags: ['CSS Grid', 'Flexbox', 'Layout', 'Comparison'],
+      author: 'Alex Chen',
+      date: '2025-03-18',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'aspect-ratio-object-fit',
+      type: 'blog',
+      title: 'The Power of aspect-ratio and object-fit in Image Layouts',
+      excerpt: 'Use aspect-ratio and object-fit to create consistent, responsive image layouts without overflow or distortion.',
+      content: `
+
+    <h2>aspect-ratio</h2>
+    <pre><code>.card-image {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  width: 100%;
+}</code></pre>
+    <h2>object-fit Options</h2>
+    <ul>
+      <li><strong>cover:</strong> Crop to fill — best for thumbnails</li>
+      <li><strong>contain:</strong> Fit entire image — best for product photos</li>
+      <li><strong>fill:</strong> Stretch — avoid unless necessary</li>
+    </ul>
+    <blockquote>Setting both width and aspect-ratio prevents layout shift — one of the biggest CLS contributors.</blockquote>
+  
+      `,
+      image: 'fa-crop',
+      category: 'css',
+      tags: ['aspect-ratio', 'object-fit', 'Images', 'CSS'],
+      author: 'Priya Sharma',
+      date: '2025-03-21',
+      readTime: '4 min',
+      featured: false,
+    },
+    {
+      id: 'dark-mode-implementation',
+      type: 'blog',
+      title: 'Dark Mode Implementation Strategies',
+      excerpt: 'Implement dark mode with prefers-color-scheme, manual toggle, and localStorage persistence.',
+      content: `
+
+    <h2>Automatic Dark Mode</h2>
+    <pre><code>@media (prefers-color-scheme: dark) {
+  :root { --bg: #0f172a; --text: #e2e8f0; }
+}</code></pre>
+    <h2>Manual Toggle with Persistence</h2>
+    <pre><code>const toggle = document.getElementById('dark-toggle');
+toggle.addEventListener('click', () => {
+  document.documentElement.classList.toggle('dark');
+  localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+});
+// On load
+if (localStorage.getItem('theme') === 'dark') {
+  document.documentElement.classList.add('dark');
+}</code></pre>
+    <blockquote>Always respect the user's system preference as the default, then let them override.</blockquote>
+  
+      `,
+      image: 'fa-moon',
+      category: 'css',
+      tags: ['Dark Mode', 'CSS', 'JavaScript', 'Theming'],
+      author: 'Maya Patel',
+      date: '2025-03-24',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'graphql-apollo-express',
+      type: 'tutorial',
+      title: 'GraphQL with Apollo Server and Express',
+      excerpt: 'Build a GraphQL API using Apollo Server with Express, including schema design, resolvers, and subscriptions.',
+      content: `
+
+    <h2>Setup</h2>
+    <pre><code>npm install @apollo/server express graphql cors</code></pre>
+    <h2>Schema and Resolvers</h2>
+    <pre><code>const typeDefs = \`
+  type Book { id: ID!, title: String!, author: String! }
+  type Query { books: [Book!]! }
+  type Mutation { addBook(title: String!, author: String!): Book! }
+\`;
+
+const resolvers = {
+  Query: { books: () => books },
+  Mutation: { addBook: (_, { title, author }) => ({ id: String(books.length + 1), title, author }) }
+};</code></pre>
+    <blockquote>GraphQL lets clients request exactly the fields they need — no more over-fetching or under-fetching.</blockquote>
+  
+      `,
+      image: 'fa-project-diagram',
+      category: 'backend',
+      tags: ['GraphQL', 'Apollo', 'Express', 'API'],
+      author: 'Alex Chen',
+      date: '2025-03-04',
+      readTime: '10 min',
+      featured: false,
+    },
+    {
+      id: 'jwt-refresh-tokens-auth',
+      type: 'tutorial',
+      title: 'Authentication with JWT and Refresh Tokens in Node.js',
+      excerpt: 'Implement secure authentication with JWT access tokens and httpOnly refresh token cookies in Node.js.',
+      content: `
+
+    <h2>Token Generation</h2>
+    <pre><code>const jwt = require('jsonwebtoken');
+
+function generateTokens(userId) {
+  const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '15m' });
+  const refreshToken = jwt.sign({ userId }, process.env.REFRESH_SECRET, { expiresIn: '7d' });
+  return { accessToken, refreshToken };
+}</code></pre>
+    <h2>Refresh Endpoint</h2>
+    <pre><code>app.post('/refresh', (req, res) => {
+  const token = req.cookies.refreshToken;
+  if (!token) return res.sendStatus(401);
+  jwt.verify(token, process.env.REFRESH_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    const { accessToken } = generateTokens(user.userId);
+    res.json({ accessToken });
+  });
+});</code></pre>
+    <blockquote>Store access tokens in memory, refresh tokens in httpOnly cookies. Never expose refresh tokens to JavaScript.</blockquote>
+  
+      `,
+      image: 'fa-lock',
+      category: 'backend',
+      tags: ['JWT', 'Authentication', 'Node.js', 'Security'],
+      author: 'Sarah Johnson',
+      date: '2025-03-07',
+      readTime: '11 min',
+      featured: false,
+    },
+    {
+      id: 'websockets-nodejs',
+      type: 'tutorial',
+      title: 'WebSockets with ws Library and Express',
+      excerpt: 'Add real-time bidirectional communication to your Node.js app using the ws library alongside Express.',
+      content: `
+
+    <h2>WebSocket Server</h2>
+    <pre><code>const { WebSocketServer } = require('ws');
+const wss = new WebSocketServer({ port: 8080 });
+
+wss.on('connection', (ws) => {
+  ws.on('message', (data) => {
+    wss.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) client.send(data);
+    });
+  });
+});</code></pre>
+    <h2>Client</h2>
+    <pre><code>const ws = new WebSocket('ws://localhost:8080');
+ws.onmessage = (event) => console.log(event.data);
+ws.send(JSON.stringify({ type: 'message', text: 'Hello' }));</code></pre>
+    <blockquote>Use <code>ws</code> instead of <code>socket.io</code> when you need minimal overhead and control. Add your own reconnection logic.</blockquote>
+  
+      `,
+      image: 'fa-exchange-alt',
+      category: 'backend',
+      tags: ['WebSockets', 'Node.js', 'Real-Time', 'ws'],
+      author: 'James Wilson',
+      date: '2025-03-10',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'message-queues-bullmq',
+      type: 'tutorial',
+      title: 'Message Queues with BullMQ and Redis',
+      excerpt: 'Handle background jobs and scheduled tasks with BullMQ, Redis, and Node.js worker processes.',
+      content: `
+
+    <h2>Queue Setup</h2>
+    <pre><code>const { Queue, Worker } = require('bullmq');
+
+const emailQueue = new Queue('email', { connection: { host: 'localhost', port: 6379 } });
+
+// Add job
+await emailQueue.add('send-welcome', { userId: 123, email: 'user@example.com' });</code></pre>
+    <h2>Worker</h2>
+    <pre><code>const worker = new Worker('email', async job => {
+  await sendEmail(job.data.email, 'Welcome!');
+}, { connection });</code></pre>
+    <blockquote>BullMQ supports delayed jobs, retries with backoff, and job scheduling — critical for production apps.</blockquote>
+  
+      `,
+      image: 'fa-tasks',
+      category: 'backend',
+      tags: ['BullMQ', 'Redis', 'Queue', 'Background Jobs'],
+      author: 'Priya Sharma',
+      date: '2025-03-13',
+      readTime: '9 min',
+      featured: false,
+    },
+    {
+      id: 'rest-api-best-practices',
+      type: 'blog',
+      title: 'REST API Best Practices: Status Codes, Pagination, Versioning',
+      excerpt: 'Design production-quality REST APIs with proper status codes, pagination strategies, and URL versioning.',
+      content: `
+
+    <h2>Status Codes</h2>
+    <ul>
+      <li><strong>200</strong> GET success, <strong>201</strong> POST created</li>
+      <li><strong>204</strong> DELETE success (no body)</li>
+      <li><strong>400</strong> Bad request, <strong>401</strong> Unauthorized, <strong>403</strong> Forbidden, <strong>404</strong> Not found</li>
+      <li><strong>422</strong> Validation error, <strong>429</strong> Rate limited</li>
+      <li><strong>500</strong> Internal server error</li>
+    </ul>
+    <h2>Cursor Pagination</h2>
+    <pre><code>GET /api/users?cursor=abc123&limit=20
+Response: { data: [...], nextCursor: "def456" }</code></pre>
+    <blockquote>Cursor-based pagination is more stable than offset-based — inserting items doesn't shift pages.</blockquote>
+  
+      `,
+      image: 'fa-code-branch',
+      category: 'backend',
+      tags: ['REST', 'API', 'Pagination', 'Best Practices'],
+      author: 'Alex Chen',
+      date: '2025-03-16',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'microservices-vs-monolith',
+      type: 'blog',
+      title: 'Microservices vs Monolith: When to Split',
+      excerpt: 'Evaluate when to use microservices vs a monolith — Conway\'s Law, domain boundaries, and team topology.',
+      content: `
+
+    <h2>Start with a Monolith</h2>
+    <p>Almost every successful microservice started as a monolith. Premature splitting adds complexity without proven value.</p>
+    <h2>When to Split</h2>
+    <ul>
+      <li>Team size > 10 engineers</li>
+      <li>Different deployment cadences for different components</li>
+      <li>Scalability requirements differ significantly</li>
+      <li>Clear domain boundaries (bounded contexts)</li>
+    </ul>
+    <blockquote>Conway's Law: systems resemble the communication structures of the organizations that build them.</blockquote>
+  
+      `,
+      image: 'fa-sitemap',
+      category: 'backend',
+      tags: ['Microservices', 'Monolith', 'Architecture', 'System Design'],
+      author: 'Sarah Johnson',
+      date: '2025-03-19',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'rate-limiting-strategies',
+      type: 'blog',
+      title: 'Rate Limiting Strategies for Public APIs',
+      excerpt: 'Implement rate limiting with token bucket, sliding window, and Redis-based approaches for your API.',
+      content: `
+
+    <h2>Sliding Window with Redis</h2>
+    <pre><code>const { rateLimit } = require('express-rate-limit');
+const RedisStore = require('rate-limit-redis');
+
+const limiter = rateLimit({
+  store: new RedisStore({ client: redisClient }),
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use('/api/', limiter);</code></pre>
+    <h2>Response Headers</h2>
+    <p>Always return <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>, and <code>Retry-After</code> headers.</p>
+    <blockquote>Use the 429 status code for rate-limited requests and include a Retry-After header with seconds.</blockquote>
+  
+      `,
+      image: 'fa-tachometer-alt',
+      category: 'backend',
+      tags: ['Rate Limiting', 'API', 'Redis', 'Security'],
+      author: 'James Wilson',
+      date: '2025-03-22',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'caching-strategies-redis-cdn',
+      type: 'blog',
+      title: 'Caching Strategies: Redis, CDN, and HTTP Caching',
+      excerpt: 'Implement multi-layer caching with Redis, CDN edge caching, and HTTP cache headers for optimal performance.',
+      content: `
+
+    <h2>HTTP Caching Headers</h2>
+    <pre><code>Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+ETag: "abc123"
+Last-Modified: Wed, 21 Oct 2025 07:28:00 GMT</code></pre>
+    <h2>Redis Cache Pattern</h2>
+    <pre><code>async function getCached(key, fetchFn, ttl = 3600) {
+  const cached = await redis.get(key);
+  if (cached) return JSON.parse(cached);
+  const data = await fetchFn();
+  await redis.set(key, JSON.stringify(data), 'EX', ttl);
+  return data;
+}</code></pre>
+    <blockquote>Cache invalidation is hard. Use <code>stale-while-revalidate</code> to serve stale data while fetching fresh data in the background.</blockquote>
+  
+      `,
+      image: 'fa-database',
+      category: 'backend',
+      tags: ['Caching', 'Redis', 'CDN', 'Performance'],
+      author: 'Priya Sharma',
+      date: '2025-03-25',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'kubernetes-101',
+      type: 'tutorial',
+      title: 'Kubernetes 101: Deploy a Containerized App',
+      excerpt: 'Deploy your first application to Kubernetes with pods, deployments, services, and ingress configuration.',
+      content: `
+
+    <h2>Deployment</h2>
+    <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: app
+        image: my-app:latest
+        ports:
+        - containerPort: 3000</code></pre>
+    <h2>Service</h2>
+    <pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+spec:
+  selector:
+    app: web
+  ports:
+  - port: 80
+    targetPort: 3000
+  type: LoadBalancer</code></pre>
+    <blockquote>Start with \`kubectl apply -f deployment.yaml\`. Use namespaces to separate environments.</blockquote>
+  
+      `,
+      image: 'fa-dharmachakra',
+      category: 'devops',
+      tags: ['Kubernetes', 'Docker', 'Deployment', 'DevOps'],
+      author: 'James Wilson',
+      date: '2025-03-02',
+      readTime: '11 min',
+      featured: false,
+    },
+    {
+      id: 'terraform-iac-beginners',
+      type: 'tutorial',
+      title: 'Terraform for Beginners: Infrastructure as Code',
+      excerpt: 'Manage cloud infrastructure with Terraform — providers, resources, state management, and modules.',
+      content: `
+
+    <h2>Basic Configuration</h2>
+    <pre><code>provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_s3_bucket" "static_files" {
+  bucket = "my-app-static-files"
+  tags = {
+    Name = "Static files bucket"
+  }
+}</code></pre>
+    <h2>State Management</h2>
+    <pre><code>terraform {
+  backend "s3" {
+    bucket = "my-terraform-state"
+    key    = "prod/terraform.tfstate"
+    region = "us-east-1"
+  }
+}</code></pre>
+    <blockquote>Always use remote state (S3, Terraform Cloud) for team collaboration — never share local state files.</blockquote>
+  
+      `,
+      image: 'fa-cubes',
+      category: 'devops',
+      tags: ['Terraform', 'IaC', 'DevOps', 'Cloud'],
+      author: 'Priya Sharma',
+      date: '2025-03-06',
+      readTime: '10 min',
+      featured: false,
+    },
+    {
+      id: 'prometheus-grafana-monitoring',
+      type: 'tutorial',
+      title: 'Monitoring with Prometheus and Grafana',
+      excerpt: 'Set up comprehensive monitoring for your apps with Prometheus metrics collection and Grafana dashboards.',
+      content: `
+
+    <h2>Prometheus Config</h2>
+    <pre><code>global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: 'node-app'
+    static_configs:
+      - targets: ['localhost:3000']</code></pre>
+    <h2>Node.js Metrics</h2>
+    <pre><code>const client = require('prom-client');
+const collectMetrics = client.collectDefaultMetrics;
+collectMetrics();
+
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', client.register.contentType);
+  res.end(await client.register.metrics());
+});</code></pre>
+    <blockquote>Set up alerts in Grafana for p99 latency > 500ms and error rate > 1% — catch issues before users do.</blockquote>
+  
+      `,
+      image: 'fa-chart-pie',
+      category: 'devops',
+      tags: ['Prometheus', 'Grafana', 'Monitoring', 'DevOps'],
+      author: 'Sarah Johnson',
+      date: '2025-03-10',
+      readTime: '9 min',
+      featured: false,
+    },
+    {
+      id: 'cicd-pipeline-design',
+      type: 'blog',
+      title: 'CI/CD Pipeline Design Patterns',
+      excerpt: 'Design efficient CI/CD pipelines with trunk-based development, preview deployments, and canary releases.',
+      content: `
+
+    <h2>Pipeline Stages</h2>
+    <ol>
+      <li>Lint + Type Check</li>
+      <li>Unit Tests (parallel)</li>
+      <li>Integration Tests</li>
+      <li>Build + Docker Image</li>
+      <li>Deploy to Staging</li>
+      <li>E2E Tests</li>
+      <li>Deploy to Production (manual approval)</li>
+    </ol>
+    <h2>Trunk-Based Development</h2>
+    <p>Short-lived feature branches merged to main daily. No long-lived branches. Each merge triggers CI/CD.</p>
+    <blockquote>Trunk-based development with feature flags reduces merge conflicts and accelerates releases.</blockquote>
+  
+      `,
+      image: 'fa-code-branch',
+      category: 'devops',
+      tags: ['CI/CD', 'Pipeline', 'DevOps', 'Git'],
+      author: 'Alex Chen',
+      date: '2025-03-14',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'cloud-provider-comparison',
+      type: 'blog',
+      title: 'Choosing a Cloud Provider: AWS vs GCP vs Azure for Startups',
+      excerpt: 'Compare AWS, GCP, and Azure for startups — cost, ease of use, service maturity, and learning curve.',
+      content: `
+
+    <h2>Quick Comparison</h2>
+    <table><tr><th>Factor</th><th>AWS</th><th>GCP</th><th>Azure</th></tr>
+    <tr><td>Market share</td><td>32%</td><td>11%</td><td>23%</td></tr>
+    <tr><td>Free tier</td><td>12 months</td><td>$300 credits</td><td>$200 credits</td></tr>
+    <tr><td>Kubernetes</td><td>EKS</td><td>GKE (best)</td><td>AKS</td></tr>
+    <tr><td>Serverless</td><td>Lambda</td><td>Cloud Functions</td><td>Functions</td></tr>
+    <tr><td>Learning curve</td><td>Steep</td><td>Moderate</td><td>Moderate</td></tr></table>
+    <blockquote>For most startups: start with GCP for simplicity, or AWS for the widest ecosystem and job market.</blockquote>
+  
+      `,
+      image: 'fa-cloud',
+      category: 'devops',
+      tags: ['Cloud', 'AWS', 'GCP', 'Azure', 'Comparison'],
+      author: 'James Wilson',
+      date: '2025-03-18',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'observability-logs-metrics-traces',
+      type: 'blog',
+      title: 'Observability: Logs, Metrics, and Traces Explained',
+      excerpt: 'Understand the three pillars of observability — structured logging, metrics collection, and distributed tracing.',
+      content: `
+
+    <h2>Structured Logging</h2>
+    <pre><code>const logger = pino({
+  level: 'info',
+  transport: { target: 'pino-pretty' }
+});
+logger.info({ userId: 123, action: 'signup' }, 'User signed up');</code></pre>
+    <h2>Distributed Tracing</h2>
+    <p>OpenTelemetry automatically traces requests across services. Each span has a trace ID linking all services involved.</p>
+    <blockquote>Logs tell you something happened. Metrics tell you how often. Traces tell you where it happened in the stack.</blockquote>
+  
+      `,
+      image: 'fa-search',
+      category: 'devops',
+      tags: ['Observability', 'Logging', 'Metrics', 'Tracing'],
+      author: 'Priya Sharma',
+      date: '2025-03-22',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'postgresql-performance-deep-dive',
+      type: 'tutorial',
+      title: 'PostgreSQL Deep Dive: Indexes, Queries, and Performance',
+      excerpt: 'Optimize PostgreSQL performance with proper indexing, query planning, and EXPLAIN ANALYZE analysis.',
+      content: `
+
+    <h2>Index Types</h2>
+    <pre><code>CREATE INDEX idx_users_email ON users (email);
+CREATE INDEX idx_orders_date ON orders (created_at DESC);
+CREATE INDEX idx_products_search ON products USING GIN (to_tsvector('english', name));</code></pre>
+    <h2>EXPLAIN ANALYZE</h2>
+    <pre><code>EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@example.com';</code></pre>
+    <p>Look for sequential scans on large tables — that's where you need an index.</p>
+    <blockquote>PostgreSQL uses B-tree indexes by default. Use GIN for full-text search and GiST for geometric data.</blockquote>
+  
+      `,
+      image: 'fa-database',
+      category: 'database',
+      tags: ['PostgreSQL', 'Indexes', 'Performance', 'SQL'],
+      author: 'Alex Chen',
+      date: '2025-03-03',
+      readTime: '10 min',
+      featured: false,
+    },
+    {
+      id: 'mongodb-aggregation-pipeline',
+      type: 'tutorial',
+      title: 'MongoDB Aggregation Pipeline: From Beginner to Pro',
+      excerpt: 'Master MongoDB\'s aggregation pipeline with $match, $group, $lookup, $unwind, and $facet stages.',
+      content: `
+
+    <h2>Pipeline Stages</h2>
+    <pre><code>db.orders.aggregate([
+  { $match: { status: 'completed' } },
+  { $group: { _id: '$product', total: { $sum: '$amount' }, count: { $sum: 1 } } },
+  { $sort: { total: -1 } },
+  { $limit: 10 }
+]);</code></pre>
+    <h2>$lookup (Join)</h2>
+    <pre><code>db.orders.aggregate([
+  { $lookup: { from: 'users', localField: 'userId', foreignField: '_id', as: 'user' } },
+  { $unwind: '$user' },
+  { $project: { 'user.password': 0 } }
+]);</code></pre>
+    <blockquote>Use $match and $limit early in the pipeline to reduce document processing at each stage.</blockquote>
+  
+      `,
+      image: 'fa-tree',
+      category: 'database',
+      tags: ['MongoDB', 'Aggregation', 'Database', 'NoSQL'],
+      author: 'Sarah Johnson',
+      date: '2025-03-06',
+      readTime: '9 min',
+      featured: false,
+    },
+    {
+      id: 'redis-beyond-caching',
+      type: 'tutorial',
+      title: 'Redis Beyond Caching: Pub/Sub, Sorted Sets, Rate Limiting',
+      excerpt: 'Use Redis data structures for real-time features: pub/sub messaging, leaderboards with sorted sets, and rate limiting.',
+      content: `
+
+    <h2>Pub/Sub</h2>
+    <pre><code>const subscriber = redisClient.duplicate();
+subscriber.subscribe('notifications', (message) => {
+  console.log('Received:', message);
+});
+await redisClient.publish('notifications', JSON.stringify({ type: 'alert', text: 'Server down' }));</code></pre>
+    <h2>Sorted Sets for Leaderboards</h2>
+    <pre><code>await redis.zAdd('leaderboard', { score: 1500, value: 'user1' });
+const top = await redis.zRange('leaderboard', 0, 9, { rev: true });</code></pre>
+    <blockquote>Redis operations are single-threaded and atomic — perfect for distributed counters and locks.</blockquote>
+  
+      `,
+      image: 'fa-bolt',
+      category: 'database',
+      tags: ['Redis', 'Pub/Sub', 'Cache', 'Database'],
+      author: 'Maya Patel',
+      date: '2025-03-09',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'database-indexing-explained',
+      type: 'blog',
+      title: 'Database Indexing Explained: When and How to Index',
+      excerpt: 'Understand database indexes — B-trees, composite indexes, covering indexes, and when they hurt performance.',
+      content: `
+
+    <h2>How Indexes Work</h2>
+    <p>Indexes are sorted copies of a subset of columns, with pointers to the actual rows. They speed up lookups but slow down writes.</p>
+    <h2>Index Guidelines</h2>
+    <ul>
+      <li>Index columns used in WHERE, JOIN, and ORDER BY</li>
+      <li>Composite indexes: order by selectivity (most selective first)</li>
+      <li>Covering indexes include all columns a query needs — no table access needed</li>
+      <li>Don't index low-cardinality columns (boolean, small enum)</li>
+    </ul>
+    <blockquote>Use \`EXPLAIN\` to check if your query uses an index. Aim for index-only scans when possible.</blockquote>
+  
+      `,
+      image: 'fa-sort-alpha-down',
+      category: 'database',
+      tags: ['Indexing', 'Database', 'Performance', 'SQL'],
+      author: 'James Wilson',
+      date: '2025-03-12',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'acid-vs-base-cap',
+      type: 'blog',
+      title: 'ACID vs BASE: Trade-offs in Distributed Databases',
+      excerpt: 'Understand ACID and BASE consistency models and how the CAP theorem applies to distributed database design.',
+      content: `
+
+    <h2>ACID Properties</h2>
+    <ul>
+      <li><strong>Atomicity:</strong> All or nothing</li>
+      <li><strong>Consistency:</strong> Data follows all rules</li>
+      <li><strong>Isolation:</strong> Concurrent transactions don't interfere</li>
+      <li><strong>Durability:</strong> Committed data survives failures</li>
+    </ul>
+    <h2>CAP Theorem</h2>
+    <p>In a distributed system, you can have at most two of: Consistency, Availability, Partition tolerance.</p>
+    <p>CP systems (like traditional RDBMS) choose consistency over availability during partitions. AP systems (like Cassandra) choose availability.</p>
+    <blockquote>Most modern systems relax consistency (eventual consistency) for better availability and partition tolerance.</blockquote>
+  
+      `,
+      image: 'fa-balance-scale',
+      category: 'database',
+      tags: ['ACID', 'BASE', 'CAP Theorem', 'Distributed Systems'],
+      author: 'Priya Sharma',
+      date: '2025-03-15',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'orm-vs-raw-sql',
+      type: 'blog',
+      title: 'ORM vs Raw SQL: Finding the Right Balance',
+      excerpt: 'Compare ORM and raw SQL approaches for performance, maintainability, and type safety in your applications.',
+      content: `
+
+    <h2>When ORMs Shine</h2>
+    <ul>
+      <li>CRUD-heavy applications with simple queries</li>
+      <li>Rapid prototyping and iteration</li>
+      <li>Type safety (TypeORM, Prisma, SQLModel)</li>
+      <li>Migration management</li>
+    </ul>
+    <h2>When Raw SQL Wins</h2>
+    <ul>
+      <li>Complex queries with many joins and aggregations</li>
+      <li>Performance-critical paths</li>
+      <li>Bulk operations</li>
+      <li>Proprietary database features</li>
+    </ul>
+    <blockquote>Use an ORM for 80% of queries and raw SQL for the 20% that need optimization — best of both worlds.</blockquote>
+  
+      `,
+      image: 'fa-exchange-alt',
+      category: 'database',
+      tags: ['ORM', 'SQL', 'Database', 'Performance'],
+      author: 'Alex Chen',
+      date: '2025-03-18',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'e2e-testing-playwright',
+      type: 'tutorial',
+      title: 'End-to-End Testing with Playwright',
+      excerpt: 'Write reliable end-to-end tests with Playwright including locators, assertions, parallel execution, and CI integration.',
+      content: `
+
+    <h2>Installation</h2>
+    <pre><code>npm init playwright@latest</code></pre>
+    <h2>Write a Test</h2>
+    <pre><code>import { test, expect } from '@playwright/test';
+
+test('user can log in', async ({ page }) => {
+  await page.goto('/login');
+  await page.fill('[name="email"]', 'user@example.com');
+  await page.fill('[name="password"]', 'secret123');
+  await page.click('button[type="submit"]');
+  await expect(page.locator('.dashboard')).toBeVisible();
+});</code></pre>
+    <h2>CI Integration</h2>
+    <pre><code># .github/workflows/e2e.yml
+- run: npx playwright install --with-deps
+- run: npx playwright test</code></pre>
+    <blockquote>Use <code>page.getByRole()</code> and <code>page.getByText()</code> over CSS selectors — they're more resilient to DOM changes.</blockquote>
+  
+      `,
+      image: 'fa-vial',
+      category: 'testing',
+      tags: ['Playwright', 'E2E', 'Testing', 'Automation'],
+      author: 'Priya Sharma',
+      date: '2025-03-05',
+      readTime: '9 min',
+      featured: false,
+    },
+    {
+      id: 'pytest-unit-testing-python',
+      type: 'tutorial',
+      title: 'Unit Testing in Python with pytest',
+      excerpt: 'Write effective unit tests in Python using pytest fixtures, parametrization, mocking, and coverage reports.',
+      content: `
+
+    <h2>Basic Test</h2>
+    <pre><code>def add(a, b): return a + b
+
+def test_add():
+    assert add(2, 3) == 5
+    assert add(-1, 1) == 0</code></pre>
+    <h2>Fixtures and Parametrize</h2>
+    <pre><code>import pytest
+
+@pytest.fixture
+def db():
+    return Database(':memory:')
+
+@pytest.mark.parametrize('input,expected', [
+    ([1, 2, 3], 6),
+    ([], 0),
+    ([-1], -1)
+])
+def test_sum(input, expected):
+    assert sum(input) == expected</code></pre>
+    <blockquote>Run <code>pytest --cov=src tests/</code> for coverage reports. Aim for 80%+ coverage on critical paths.</blockquote>
+  
+      `,
+      image: 'fa-check-double',
+      category: 'testing',
+      tags: ['pytest', 'Python', 'Testing', 'Unit Tests'],
+      author: 'Sarah Johnson',
+      date: '2025-03-08',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'testing-trophy-strategy',
+      type: 'blog',
+      title: 'The Testing Trophy: Unit, Integration, and E2E Strategy',
+      excerpt: 'Learn the testing trophy approach — how to balance unit, integration, and end-to-end tests for maximum confidence.',
+      content: `
+
+    <h2>The Testing Trophy (Kent C. Dodds)</h2>
+    <p>Write most of your tests as integration tests, with static analysis catching the rest. Fewer E2E tests (critical paths only).</p>
+    <ul>
+      <li><strong>Static Analysis:</strong> TypeScript, ESLint — catch errors before running</li>
+      <li><strong>Unit Tests:</strong> Test isolated functions and utilities</li>
+      <li><strong>Integration Tests:</strong> Test how components work together (the bulk)</li>
+      <li><strong>E2E Tests:</strong> Test critical user journeys only</li>
+    </ul>
+    <blockquote>Integration tests give the best confidence-per-test ratio. They test real user scenarios without the brittleness of E2E.</blockquote>
+  
+      `,
+      image: 'fa-trophy',
+      category: 'testing',
+      tags: ['Testing', 'Integration', 'Unit Tests', 'E2E'],
+      author: 'Maya Patel',
+      date: '2025-03-12',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'tdd-in-practice',
+      type: 'blog',
+      title: 'Test-Driven Development (TDD) in Practice',
+      excerpt: 'Apply TDD with a real-world case study — red-green-refactor cycle with practical examples and common pitfalls.',
+      content: `
+
+    <h2>The TDD Cycle</h2>
+    <ol>
+      <li><strong>Red:</strong> Write a failing test</li>
+      <li><strong>Green:</strong> Write the minimum code to pass</li>
+      <li><strong>Refactor:</strong> Clean up without changing behavior</li>
+    </ol>
+    <pre><code># Step 1: Red
+def test_is_palindrome():
+    assert is_palindrome('racecar') == True
+    assert is_palindrome('hello') == False
+
+# Step 2: Green
+def is_palindrome(s):
+    return s == s[::-1]
+
+# Step 3: Refactor (nothing to refactor here)</code></pre>
+    <blockquote>TDD is about design, not testing. The tests are a byproduct of designing your API before implementing it.</blockquote>
+  
+      `,
+      image: 'fa-redo',
+      category: 'testing',
+      tags: ['TDD', 'Testing', 'Python', 'Best Practices'],
+      author: 'James Wilson',
+      date: '2025-03-16',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'owasp-top-10-prevention',
+      type: 'tutorial',
+      title: 'OWASP Top 10: Prevention for Web Developers',
+      excerpt: 'Protect your web app against the OWASP Top 10 — XSS, CSRF, SQL injection, SSRF with prevention code examples.',
+      content: `
+
+    <h2>XSS Prevention</h2>
+    <pre><code>// React auto-escapes JSX — safe by default
+// For innerHTML, sanitize first:
+function sanitize(html) {
+  const div = document.createElement('div');
+  div.textContent = html;
+  return div.innerHTML;
+}</code></pre>
+    <h2>CSRF Protection</h2>
+    <pre><code>// Use SameSite cookies
+res.cookie('session', token, { httpOnly: true, sameSite: 'strict', secure: true });
+// Or use CSRF tokens
+const csrfToken = crypto.randomBytes(32).toString('hex');</code></pre>
+    <blockquote>Use parameterized queries or an ORM to prevent SQL injection. Never concatenate user input into SQL strings.</blockquote>
+  
+      `,
+      image: 'fa-shield-alt',
+      category: 'security',
+      tags: ['OWASP', 'XSS', 'CSRF', 'Security'],
+      author: 'Alex Chen',
+      date: '2025-03-04',
+      readTime: '10 min',
+      featured: false,
+    },
+    {
+      id: 'oauth-oidc-authentication',
+      type: 'tutorial',
+      title: 'Secure Authentication with OAuth 2.0 and OpenID Connect',
+      excerpt: 'Implement OAuth 2.0 authorization code flow with PKCE and OpenID Connect for secure third-party authentication.',
+      content: `
+
+    <h2>Authorization Code Flow with PKCE</h2>
+    <pre><code>// Generate code verifier and challenge
+const verifier = crypto.randomBytes(32).toString('base64url');
+const challenge = crypto.createHash('sha256').update(verifier).digest('base64url');
+
+// Redirect to authorization server
+const authUrl = \`https://provider.com/oauth/authorize?
+  response_type=code&client_id=\${clientId}&
+  code_challenge=\${challenge}&redirect_uri=\${redirectUri}\`;</code></pre>
+    <h2>Token Exchange</h2>
+    <pre><code>const response = await fetch('https://provider.com/oauth/token', {
+  method: 'POST',
+  body: new URLSearchParams({
+    grant_type: 'authorization_code',
+    code,
+    code_verifier: verifier,
+    client_id: clientId,
+    redirect_uri: redirectUri
+  })
+});</code></pre>
+    <blockquote>PKCE is mandatory for mobile and SPA apps. It prevents interception of the authorization code.</blockquote>
+  
+      `,
+      image: 'fa-id-card',
+      category: 'security',
+      tags: ['OAuth', 'OpenID Connect', 'Authentication', 'Security'],
+      author: 'Priya Sharma',
+      date: '2025-03-08',
+      readTime: '11 min',
+      featured: false,
+    },
+    {
+      id: 'https-csp-security-headers',
+      type: 'blog',
+      title: 'HTTPS, SSL/TLS, and Content Security Policy Explained',
+      excerpt: 'Secure your site with HTTPS, SSL/TLS certificates, and Content Security Policy headers to prevent attacks.',
+      content: `
+
+    <h2>Content Security Policy (CSP)</h2>
+    <pre><code>Content-Security-Policy: default-src 'self';
+  script-src 'self' https://cdn.example.com;
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' https:;
+  connect-src 'self' https://api.example.com;</code></pre>
+    <h2>Security Headers Checklist</h2>
+    <ul>
+      <li>\`Strict-Transport-Security: max-age=63072000\`</li>
+      <li>\`X-Content-Type-Options: nosniff\`</li>
+      <li>\`X-Frame-Options: DENY\`</li>
+      <li>\`Referrer-Policy: strict-origin-when-cross-origin\`</li>
+    </ul>
+    <blockquote>Use securityheaders.com to check your site's security headers. Aim for an A+ rating.</blockquote>
+  
+      `,
+      image: 'fa-lock',
+      category: 'security',
+      tags: ['HTTPS', 'SSL', 'CSP', 'Security Headers'],
+      author: 'Sarah Johnson',
+      date: '2025-03-12',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'secrets-management',
+      type: 'blog',
+      title: 'Secrets Management: Environment Variables, Vault, and GitGuardian',
+      excerpt: 'Protect API keys, database passwords, and tokens with proper secrets management and automated scanning.',
+      content: `
+
+    <h2>Environment Variables</h2>
+    <pre><code># .env file (never commit)
+DATABASE_URL=postgresql://user:password@localhost:5432/db
+JWT_SECRET=your-secret-key-here
+
+# Access in code
+const dbUrl = process.env.DATABASE_URL;</code></pre>
+    <h2>Secrets Scanning</h2>
+    <p>Use <code>git-secrets</code> or GitGuardian to scan for committed secrets before each push.</p>
+    <pre><code># pre-commit hook
+pip install detect-secrets
+detect-secrets scan --baseline .secrets.baseline</code></pre>
+    <blockquote>Never hardcode secrets. Use environment variables locally and a secrets manager (Vault, AWS Secrets Manager) in production.</blockquote>
+  
+      `,
+      image: 'fa-key',
+      category: 'security',
+      tags: ['Secrets', 'Security', 'Environment Variables', 'DevOps'],
+      author: 'James Wilson',
+      date: '2025-03-16',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'developer-portfolio-guide',
+      type: 'tutorial',
+      title: 'Building Your Developer Portfolio: A Complete Guide',
+      excerpt: 'Create a standout developer portfolio with project selection, writing case studies, and deployment strategies.',
+      content: `
+
+    <h2>What to Include</h2>
+    <ul>
+      <li>3-5 best projects (quality over quantity)</li>
+      <li>Case study format: problem → approach → outcome</li>
+      <li>Live demos and GitHub links</li>
+    </ul>
+    <h2>Project Selection</h2>
+    <p>Choose projects that demonstrate different skills: a full-stack app, an open-source contribution, and a solo side project.</p>
+    <blockquote>A portfolio with three well-documented projects beats one with ten unfinished ones.</blockquote>
+  
+      `,
+      image: 'fa-briefcase',
+      category: 'career',
+      tags: ['Portfolio', 'Career', 'Projects', 'Job Search'],
+      author: 'Maya Patel',
+      date: '2025-03-03',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'open-source-contribution',
+      type: 'tutorial',
+      title: 'Open Source Contribution: From First PR to Maintainer',
+      excerpt: 'Start contributing to open source — finding projects, reading codebases, making your first pull request.',
+      content: `
+
+    <h2>Finding Projects</h2>
+    <ul>
+      <li>Search GitHub for 'good first issue' labels</li>
+      <li>Pick projects you use and understand</li>
+      <li>Start with documentation fixes</li>
+    </ul>
+    <h2>Making Your First PR</h2>
+    <pre><code>git clone https://github.com/user/project
+git checkout -b fix/typo-readme
+# Make changes
+git commit -m "docs: fix typo in README"
+git push -u origin fix/typo-readme</code></pre>
+    <blockquote>Start small. Documentation and test improvements are valuable contributions that teach you the project's workflow.</blockquote>
+  
+      `,
+      image: 'fa-code-branch',
+      category: 'career',
+      tags: ['Open Source', 'GitHub', 'Contribution', 'Career'],
+      author: 'Alex Chen',
+      date: '2025-03-06',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'web-developer-roadmap-2025',
+      type: 'blog',
+      title: 'The 2025 Web Developer Roadmap',
+      excerpt: 'A curated learning roadmap for frontend, backend, and DevOps skills with resources for each stage.',
+      content: `
+
+    <h2>Frontend</h2>
+    <p>HTML → CSS (Flexbox, Grid) → JavaScript (ES6+) → Framework (React/Vue/Svelte) → State Management → Testing</p>
+    <h2>Backend</h2>
+    <p>Language (Node.js/Python) → HTTP/APIs → Database → Authentication → Deployment</p>
+    <h2>DevOps</h2>
+    <p>Git → CI/CD → Docker → Cloud → Monitoring</p>
+    <blockquote>Don't try to learn everything. Pick one path, build projects, and expand your skills based on what you build.</blockquote>
+  
+      `,
+      image: 'fa-map-signs',
+      category: 'career',
+      tags: ['Roadmap', 'Career', 'Learning', 'Web Development'],
+      author: 'Sarah Johnson',
+      date: '2025-03-10',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'technical-blogging-guide',
+      type: 'blog',
+      title: 'How to Write Effective Technical Blog Posts',
+      excerpt: 'Write clear, engaging technical content — structure, code examples, audience targeting, and SEO fundamentals.',
+      content: `
+
+    <h2>Structure</h2>
+    <ol>
+      <li>Problem statement (why should the reader care?)</li>
+      <li>Step-by-step solution with code</li>
+      <li>Common pitfalls</li>
+      <li>Summary</li>
+    </ol>
+    <h2>Code Examples</h2>
+    <ul>
+      <li>Each code block should be runnable or copyable</li>
+      <li>Explain what the code does before showing it</li>
+      <li>Use consistent formatting and naming</li>
+    </ul>
+    <blockquote>Write for your past self. If you struggled with a concept, explain it the way you wish it had been explained to you.</blockquote>
+  
+      `,
+      image: 'fa-pen-fancy',
+      category: 'career',
+      tags: ['Blogging', 'Writing', 'Technical Content', 'Career'],
+      author: 'Priya Sharma',
+      date: '2025-03-13',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'system-design-interview-prep',
+      type: 'blog',
+      title: 'Preparing for System Design Interviews',
+      excerpt: 'Master system design interviews with common patterns, whiteboarding techniques, and trade-off analysis frameworks.',
+      content: `
+
+    <h2>Common Interview Topics</h2>
+    <ul>
+      <li>Design URL shortener (tinyurl, bitly)</li>
+      <li>Design chat system (WhatsApp, Slack)</li>
+      <li>Design social media feed (Twitter, Instagram)</li>
+      <li>Design rate limiter</li>
+    </ul>
+    <h2>Framework</h2>
+    <ol>
+      <li>Clarify requirements and scope</li>
+      <li>Estimate scale (QPS, storage, bandwidth)</li>
+      <li>High-level design (components)</li>
+      <li>Deep dive on key components</li>
+      <li>Trade-offs and bottlenecks</li>
+    </ol>
+    <blockquote>The interviewer cares more about your reasoning process than the final design. Think out loud.</blockquote>
+  
+      `,
+      image: 'fa-sitemap',
+      category: 'career',
+      tags: ['System Design', 'Interviews', 'Career', 'Architecture'],
+      author: 'James Wilson',
+      date: '2025-03-17',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'remote-work-developer-tools',
+      type: 'blog',
+      title: 'Remote Work Tools and Practices for Developers',
+      excerpt: 'Effective remote work strategies — async communication, documentation, time management, and essential tools.',
+      content: `
+
+    <h2>Async Communication</h2>
+    <ul>
+      <li>Write detailed tickets and PR descriptions</li>
+      <li>Record short Loom videos for complex topics</li>
+      <li>Use GitHub Discussions for collaborative decisions</li>
+    </ul>
+    <h2>Essential Tools</h2>
+    <p>Slack/Zulip for chat, Linear/Jira for tickets, Notion/Confluence for docs, Zoom/Google Meet for calls.</p>
+    <h2>Time Management</h2>
+    <p>Time blocking, Pomodoro technique, and strict work-hour boundaries prevent burnout.</p>
+    <blockquote>Over-communicate in writing. A well-written message saves a meeting.</blockquote>
+  
+      `,
+      image: 'fa-home',
+      category: 'career',
+      tags: ['Remote Work', 'Productivity', 'Career', 'Tools'],
+      author: 'Maya Patel',
+      date: '2025-03-20',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'rag-langchain-app',
+      type: 'tutorial',
+      title: 'Build a RAG (Retrieval-Augmented Generation) App with LangChain',
+      excerpt: 'Build a Q&A system over your documents using LangChain, vector stores, and OpenAI embeddings.',
+      content: `
+
+    <h2>Document Loading and Chunking</h2>
+    <pre><code>from langchain_community.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+loader = PyPDFLoader('document.pdf')
+docs = loader.load()
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+chunks = splitter.split_documents(docs)</code></pre>
+    <h2>Vector Store and QA Chain</h2>
+    <pre><code>from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import Chroma
+
+embeddings = OpenAIEmbeddings()
+db = Chroma.from_documents(chunks, embeddings)
+retriever = db.as_retriever()</code></pre>
+    <blockquote>RAG combines retrieval (search) with generation (LLM) — the model answers based on your documents, not just its training data.</blockquote>
+  
+      `,
+      image: 'fa-robot',
+      category: 'ai-ml',
+      tags: ['RAG', 'LangChain', 'AI', 'LLM'],
+      author: 'Maya Patel',
+      date: '2025-03-05',
+      readTime: '11 min',
+      featured: false,
+    },
+    {
+      id: 'ollama-docker-llm',
+      type: 'tutorial',
+      title: 'Deploying LLMs with Ollama and Docker',
+      excerpt: 'Run large language models locally or on your server using Ollama and Docker for cost-effective AI deployment.',
+      content: `
+
+    <h2>Run Ollama</h2>
+    <pre><code>docker run -d --gpus all -v ollama:/root/.ollama -p 11434:11434 \
+  --name ollama ollama/ollama
+
+docker exec ollama ollama pull llama3.2</code></pre>
+    <h2>API Call</h2>
+    <pre><code>fetch('http://localhost:11434/api/generate', {
+  method: 'POST',
+  body: JSON.stringify({
+    model: 'llama3.2',
+    prompt: 'Explain JavaScript closures',
+    stream: false
+  })
+});</code></pre>
+    <blockquote>Ollama supports dozens of open-source models. It runs on CPU (slow) or GPU (fast).</blockquote>
+  
+      `,
+      image: 'fa-docker',
+      category: 'ai-ml',
+      tags: ['Ollama', 'Docker', 'LLM', 'AI Deployment'],
+      author: 'James Wilson',
+      date: '2025-03-09',
+      readTime: '9 min',
+      featured: false,
+    },
+    {
+      id: 'ai-engineer-stack',
+      type: 'blog',
+      title: 'The AI Engineer Stack: LangChain, Vector Databases, and Agents',
+      excerpt: 'Survey the AI engineer tooling landscape — LangChain, Chroma/Pinecone, and agent frameworks with use cases.',
+      content: `
+
+    <h2>The Stack</h2>
+    <ul>
+      <li><strong>LLMs:</strong> OpenAI, Anthropic, open-source (Llama, Mistral)</li>
+      <li><strong>Frameworks:</strong> LangChain, LlamaIndex, Vercel AI SDK</li>
+      <li><strong>Vector DBs:</strong> Chroma (local), Pinecone (managed), Weaviate</li>
+      <li><strong>Agents:</strong> AutoGPT, CrewAI, LangGraph</li>
+    </ul>
+    <h2>When to Use Each</h2>
+    <p>LangChain for document Q&A and chains. LlamaIndex for indexing large document corpora. Vercel AI SDK for streaming chat UIs.</p>
+    <blockquote>The AI stack is evolving fast. Pick tools with good documentation and active communities.</blockquote>
+  
+      `,
+      image: 'fa-layer-group',
+      category: 'ai-ml',
+      tags: ['AI', 'LangChain', 'Vector Database', 'LLM'],
+      author: 'Sarah Johnson',
+      date: '2025-03-13',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'prompt-engineering-patterns',
+      type: 'blog',
+      title: 'Prompt Engineering Patterns for Developers',
+      excerpt: 'Master prompt engineering — chain-of-thought, few-shot, structured outputs, and function calling with LLMs.',
+      content: `
+
+    <h2>Prompt Patterns</h2>
+    <pre><code>// Chain-of-thought
+const prompt = \`
+Solve this step by step:
+A store has 15 apples. It sells 7 and then receives 10 more.
+Step 1: Start with 15 apples
+Step 2: After selling 7: 15 - 7 = 8
+Step 3: After receiving 10: 8 + 10 = 18
+Answer: 18
+Now solve: A train has 200 passengers. 85 get off, 120 get on.\`</code></pre>
+    <h2>Structured Outputs</h2>
+    <pre><code>const response = await openai.chat.completions.create({
+  model: 'gpt-4',
+  messages: [{ role: 'user', content: 'Extract: "John is 28 and lives in NYC"' }],
+  response_format: { type: 'json_object' }
+});</code></pre>
+    <blockquote>Chain-of-thought prompting dramatically improves reasoning accuracy on multi-step problems.</blockquote>
+  
+      `,
+      image: 'fa-brain',
+      category: 'ai-ml',
+      tags: ['Prompt Engineering', 'AI', 'LLM', 'Developer Tools'],
+      author: 'Alex Chen',
+      date: '2025-03-17',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'webgpu-next-gen-graphics',
+      type: 'blog',
+      title: 'WebGPU: Next-Generation Graphics and Compute in the Browser',
+      excerpt: 'Explore WebGPU for high-performance graphics and general-purpose GPU compute directly in the browser.',
+      content: `
+
+    <h2>What is WebGPU?</h2>
+    <p>WebGPU is the successor to WebGL, providing direct GPU access with lower overhead and compute shader support.</p>
+    <pre><code>const adapter = await navigator.gpu.requestAdapter();
+const device = await adapter.requestDevice();
+const shader = device.createShaderModule({
+  code: \`
+    @vertex fn vs() -> @builtin(position) vec4<f32> { ... }
+    @fragment fn fs() -> @location(0) vec4<f32> { ... }
+  \`
+});</code></pre>
+    <blockquote>WebGPU supports compute shaders for GPU-accelerated machine learning, physics simulations, and image processing.</blockquote>
+  
+      `,
+      image: 'fa-cubes',
+      category: 'web-dev',
+      tags: ['WebGPU', 'Graphics', 'GPU', 'Performance'],
+      author: 'James Wilson',
+      date: '2025-03-06',
+      readTime: '8 min',
+      featured: false,
+    },
+    {
+      id: 'edge-computing-comparison',
+      type: 'blog',
+      title: 'Edge Computing: Cloudflare Workers vs Deno Deploy',
+      excerpt: 'Compare edge computing platforms — Cloudflare Workers and Deno Deploy for globally distributed serverless functions.',
+      content: `
+
+    <h2>Cloudflare Workers</h2>
+    <pre><code>export default {
+  async fetch(request) {
+    const cache = caches.default;
+    const cached = await cache.match(request);
+    if (cached) return cached;
+    const response = await fetch('https://api.example.com');
+    await cache.put(request, response.clone());
+    return response;
+  }
+};</code></pre>
+    <h2>Deno Deploy</h2>
+    <pre><code>Deno.serve(async (req) => {
+  const data = await Deno.readTextFile('./data.json');
+  return new Response(data, { headers: { 'Content-Type': 'application/json' } });
+});</code></pre>
+    <blockquote>Edge functions run in data centers close to your users — single-digit millisecond cold starts on both platforms.</blockquote>
+  
+      `,
+      image: 'fa-globe',
+      category: 'devops',
+      tags: ['Edge Computing', 'Cloudflare Workers', 'Deno', 'Serverless'],
+      author: 'Priya Sharma',
+      date: '2025-03-10',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'state-of-web-frameworks-2025',
+      type: 'blog',
+      title: 'The State of Web Frameworks in 2025',
+      excerpt: 'Compare React, Vue, Svelte, Solid, and Qwik — where each framework excels and which to choose for your next project.',
+      content: `
+
+    <h2>Framework Comparison</h2>
+    <table><tr><th>Framework</th><th>Best For</th><th>Bundle Size</th><th>Learning Curve</th></tr>
+    <tr><td>React</td><td>Ecosystem, jobs, large teams</td><td>~40KB</td><td>Moderate</td></tr>
+    <tr><td>Vue</td><td>Rapid development, small teams</td><td>~33KB</td><td>Easy</td></tr>
+    <tr><td>Svelte</td><td>Small bundles, reactive UIs</td><td>~2KB (compiled)</td><td>Easy</td></tr>
+    <tr><td>Solid</td><td>High performance, fine-grained reactivity</td><td>~8KB</td><td>Moderate</td></tr>
+    <tr><td>Qwik</td><td>Instant loading, resumability</td><td>~1KB (initial)</td><td>Steep</td></tr></table>
+    <blockquote>All modern frameworks are fast enough. Choose based on ecosystem, team skills, and community support.</blockquote>
+  
+      `,
+      image: 'fa-chart-bar',
+      category: 'web-dev',
+      tags: ['React', 'Vue', 'Svelte', 'Solid', 'Qwik'],
+      author: 'Alex Chen',
+      date: '2025-03-14',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'low-bandwidth-web-apps',
+      type: 'blog',
+      title: 'Building for the Next Billion Users: Low-Bandwidth Web Apps',
+      excerpt: 'Design web applications that work in low-bandwidth environments — progressive enhancement, offline-first, and data budgets.',
+      content: `
+
+    <h2>Principles</h2>
+    <ul>
+      <li>Target < 100KB initial page load</li>
+      <li>Offline-first with service workers</li>
+      <li>Optimistic UI updates for slow connections</li>
+      <li>Data budget: track every kilobyte</li>
+    </ul>
+    <h2>Techniques</h2>
+    <pre><code>// Register service worker for offline access
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
+
+// Use Cache API for API responses
+const cache = await caches.open('api-v1');
+cache.put(request, response.clone());</code></pre>
+    <blockquote>Every 100KB of JavaScript saves ~$0.23 in data costs for users in developing countries. Small bundles matter.</blockquote>
+  
+      `,
+      image: 'fa-wifi',
+      category: 'web-dev',
+      tags: ['Low-Bandwidth', 'Offline-First', 'Performance', 'Accessibility'],
+      author: 'Priya Sharma',
+      date: '2025-03-18',
+      readTime: '6 min',
+      featured: false,
+    },
+    {
+      id: 'url-shortener-hono-cloudflare',
+      type: 'tutorial',
+      title: 'Build a URL Shortener with Hono and Cloudflare Workers',
+      excerpt: 'Create a serverless URL shortener using Hono framework, Cloudflare KV for storage, and edge deployment.',
+      content: `
+
+    <h2>Setup</h2>
+    <pre><code>npm create hono@latest url-shortener
+cd url-shortener</code></pre>
+    <h2>Main Handler</h2>
+    <pre><code>import { Hono } from 'hono';
+
+const app = new Hono();
+
+app.post('/shorten', async (c) => {
+  const { url } = await c.req.json();
+  const id = crypto.randomUUID().slice(0, 8);
+  await c.env.KV.put(id, url);
+  return c.json({ short: \`https://short.com/\${id}\` });
+});
+
+app.get('/:id', async (c) => {
+  const url = await c.env.KV.get(c.req.param('id'));
+  return url ? c.redirect(url) : c.notFound();
+});
+
+export default app;</code></pre>
+    <blockquote>Hono is ultralight (14KB) and runs on Cloudflare Workers, Deno, Bun, and Node.js with the same API.</blockquote>
+  
+      `,
+      image: 'fa-link',
+      category: 'backend',
+      tags: ['Hono', 'Cloudflare Workers', 'URL Shortener', 'Serverless'],
+      author: 'Priya Sharma',
+      date: '2025-03-12',
+      readTime: '7 min',
+      featured: false,
+    },
+    {
+      id: 'real-time-collaborative-editor',
+      type: 'tutorial',
+      title: 'Real-Time Collaborative Editor with CRDTs and Yjs',
+      excerpt: 'Build a Google Docs-style collaborative editor using Yjs CRDTs, WebRTC, and shared cursors.',
+      content: `
+
+    <h2>Setup Yjs</h2>
+    <pre><code>npm install yjs y-websocket y-codemirror.next</code></pre>
+    <h2>Create Document</h2>
+    <pre><code>import * as Y from 'yjs';
+import { WebsocketProvider } from 'y-websocket';
+
+const doc = new Y.Doc();
+const provider = new WebsocketProvider('ws://localhost:1234', 'my-room', doc);
+const type = doc.getText('content');
+
+// Bind to editor
+import { yCollab } from 'y-codemirror.next';
+yCollab(editorView, type, provider.awareness);</code></pre>
+    <h2>Server</h2>
+    <p>Run <code>y-websocket/bin/server.js</code> for the sync server, or use y-webrtc for peer-to-peer without a server.</p>
+    <blockquote>CRDTs (Conflict-Free Replicated Data Types) enable offline editing and automatic conflict resolution without a central server.</blockquote>
+  
+      `,
+      image: 'fa-users',
+      category: 'javascript',
+      tags: ['Yjs', 'CRDT', 'Collaborative', 'Real-Time'],
+      author: 'Maya Patel',
+      date: '2025-03-20',
+      readTime: '10 min',
+      featured: false,
+    },
+    {
+      id: 'architecture-decision-records',
+      type: 'blog',
+      title: 'Architecture Decision Records (ADRs): Documenting Technical Choices',
+      excerpt: 'Document architectural decisions with ADRs — a lightweight format for capturing context, options, and trade-offs.',
+      content: `
+
+    <h2>ADR Format</h2>
+    <pre><code># ADR-001: Use PostgreSQL as Primary Database
+
+## Status
+Accepted
+
+## Context
+We need a relational database for the new CRM system. The team has experience with PostgreSQL.
+
+## Decision
+We will use PostgreSQL 16 with the pgvector extension for future AI features.
+
+## Consequences
+- Positive: Strong ecosystem, excellent JSON support
+- Positive: pgvector enables vector search without a separate DB
+- Negative: Higher operational overhead than SQLite
+- Risk: Need to hire DBA expertise</code></pre>
+    <blockquote>Store ADRs in your repository under docs/adr/. Each ADR is a markdown file that's reviewed like code.</blockquote>
+  
+      `,
+      image: 'fa-file-alt',
+      category: 'backend',
+      tags: ['ADR', 'Documentation', 'Architecture', 'Best Practices'],
+      author: 'Sarah Johnson',
+      date: '2025-03-22',
+      readTime: '5 min',
+      featured: false,
+    },
+    {
+      id: 'read-codebase-efficiently',
+      type: 'blog',
+      title: 'How to Read a Codebase Efficiently',
+      excerpt: 'Strategies for understanding unfamiliar codebases — starting points, tracing execution, and building mental models.',
+      content: `
+
+    <h2>Starting Points</h2>
+    <ul>
+      <li>Read the README and CONTRIBUTING.md</li>
+      <li>Examine the project structure (package.json, folder layout)</li>
+      <li>Find the entry point (main, index, app)</li>
+      <li>Look at the test files for usage examples</li>
+    </ul>
+    <h2>Building Understanding</h2>
+    <p>Trace a single feature end-to-end. Add console.log or debugger statements. Draw the module dependency graph.</p>
+    <blockquote>Don't try to understand everything. Focus on what you need to change and build outward from there.</blockquote>
+  
+      `,
+      image: 'fa-book-open',
+      category: 'career',
+      tags: ['Code Reading', 'Learning', 'Developer Skills', 'Productivity'],
+      author: 'James Wilson',
+      date: '2025-03-25',
+      readTime: '5 min',
+      featured: false,
+    }
+
   ]
 };
 
