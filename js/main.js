@@ -2,11 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initSearch();
   initScrollToTop();
-  initNewsletter();
   initContactForm();
   loadCategories();
   loadFooterCategories();
   loadPageContent();
+  initYear();
 });
 
 function initNavigation() {
@@ -88,9 +88,12 @@ function displaySearchResults(query) {
   const main = document.querySelector('main');
   if (!main) return;
 
+  main.classList.add('searching');
+
   const section = document.createElement('section');
   section.className = 'search-results container';
   section.id = 'searchResults';
+  section.style.paddingTop = '40px';
 
   if (results.length === 0) {
     section.innerHTML = `
@@ -102,17 +105,19 @@ function displaySearchResults(query) {
     `;
   } else {
     section.innerHTML = `
-      <h2>Search results for <span>"${query}"</span> (${results.length})</h2>
+      <h2 style="margin-bottom:24px">Search results for <span style="color:var(--primary)">"${query}"</span> (${results.length})</h2>
       <div class="post-grid">${results.map(renderPostCard).join('')}</div>
     `;
   }
 
-  main.appendChild(section);
+  main.prepend(section);
 }
 
 function removeSearchResults() {
   const existing = document.getElementById('searchResults');
   if (existing) existing.remove();
+  const main = document.querySelector('main');
+  if (main) main.classList.remove('searching');
 }
 
 function initScrollToTop() {
@@ -125,20 +130,6 @@ function initScrollToTop() {
 
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
-
-function initNewsletter() {
-  const form = document.getElementById('newsletterForm');
-  if (!form) return;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const input = form.querySelector('input');
-    if (input && input.value.trim()) {
-      alert('Thank you for subscribing! We\'ll keep you updated.');
-      input.value = '';
-    }
   });
 }
 
@@ -412,4 +403,9 @@ function updateMetaTags(post) {
   const ogUrl = document.querySelector('meta[property="og:url"]');
   if (ogUrl) ogUrl.setAttribute('content', url);
   if (canonical) canonical.setAttribute('href', url);
+}
+
+function initYear() {
+  const year = new Date().getFullYear();
+  document.querySelectorAll('.current-year').forEach(el => el.textContent = year);
 }

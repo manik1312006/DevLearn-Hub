@@ -1014,6 +1014,10 @@ ul { list-style: none; }
   margin-bottom: 24px;
 }
 
+main.searching > section:not(.search-results) {
+  display: none;
+}
+
 .search-results {
   padding: 120px 0 60px;
 }
