@@ -93,7 +93,7 @@ function displaySearchResults(query) {
   const section = document.createElement('section');
   section.className = 'search-results container';
   section.id = 'searchResults';
-  section.style.paddingTop = '40px';
+
 
   if (results.length === 0) {
     section.innerHTML = `
@@ -284,7 +284,7 @@ function attachPostCardEvents(container) {
 
 function getPostUrl(post) {
   const base = post.type === 'tutorial' ? 'tutorials' : 'blog';
-  return `${base}/post.html?id=${post.id}`;
+  return `/${base}/post.html?id=${post.id}`;
 }
 
 function getCategoryName(catId) {
